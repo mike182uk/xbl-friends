@@ -1,0 +1,23 @@
+.boot {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.loading {
+  text-align: center;
+  font-size: 26px !important;
+}
+
+.loading small {
+  font-size: 65%;
+}
+
+.glyphiconRefreshAnimate {
+  animation: spin .7s infinite linear;
+}
+
+@keyframes spin {
+  from { transform: scale(1) rotate(0deg);}
+  to { transform: scale(1) rotate(360deg);}
+}

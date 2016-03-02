@@ -1,0 +1,3 @@
+# XBL Friends
+
+WIP

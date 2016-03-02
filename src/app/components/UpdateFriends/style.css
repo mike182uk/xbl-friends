@@ -1,0 +1,13 @@
+.update {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.update p {
+  margin-bottom: 0;
+}
+
+.buttonContainer {
+  align-self: flex-end;
+}

@@ -1,0 +1,56 @@
+.friend {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.pic {
+  min-width: 80px;
+  margin-right: 15px;
+}
+
+.pic img {
+  height: 80px;
+  width: 80px;
+}
+
+.details {
+  flex: auto;
+  display: flex;
+  flex-flow: column;
+}
+
+.details span {
+  flex: auto;
+}
+
+.gamertag {
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.name {
+  font-style: italic;
+  font-size: 12px;
+}
+
+.primaryStatus {
+  margin-top: 10px;
+}
+
+.secondaryStatus {
+  font-style: italic;
+  font-size: 12px;
+}
+
+.online .gamertag::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  margin-right: 5px;
+  border-radius: 15px;
+  background-color: #93E21A;
+  margin-bottom: 2px;
+}
