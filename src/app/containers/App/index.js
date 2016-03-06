@@ -1,5 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { remote } from 'electron';
+import ENV from '../../utils/env';
 
 import DevTools from '../../containers/DevTools';
 import AppError from '../../components/AppError';
@@ -19,10 +21,18 @@ const App = class extends React.Component {
   }
 
   getNav() {
-    if (true) {//this.props.authorized) {
+    if (this.props.authorized || ENV == 'dev') {
       return (
         <AppMainNav />
       )
+    }
+  }
+
+  getDevTools() {
+    if (ENV == 'dev') {
+      return (
+        <DevTools />
+      );
     }
   }
 
@@ -32,7 +42,7 @@ const App = class extends React.Component {
         {this.getNav()}
         {this.getError()}
         {this.props.children}
-        {<DevTools />}
+        {this.getDevTools()}
       </div>
     );
   }

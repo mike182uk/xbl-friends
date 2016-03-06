@@ -5,6 +5,7 @@ import { syncHistory } from 'react-router-redux';
 import * as storage from 'redux-storage';
 import createEngine from 'redux-storage-engine-localstorage';
 import filter from 'redux-storage-decorator-filter';
+import ENV from './utils/env';
 
 import reducers from './reducers';
 import bgUpdateFriendsSubscriber from './subscribers/bg-update-friends';
@@ -37,10 +38,15 @@ const storageMiddleware = storage.createMiddleware(storageEngine, [], [
 // create store
 const reduxRouterMiddleware = syncHistory(hashHistory);
 
-const createStoreWithEnhancers = compose(
-  applyMiddleware(thunkMiddleware, reduxRouterMiddleware, storageMiddleware),
-  DevTools.instrument()
-)(createStore);
+const storeEnhancers = [
+  applyMiddleware(thunkMiddleware, reduxRouterMiddleware, storageMiddleware)
+];
+
+if (ENV == 'dev') {
+  storeEnhancers.push(DevTools.instrument());
+}
+
+const createStoreWithEnhancers = compose.apply(null, storeEnhancers)(createStore);
 
 const store = createStoreWithEnhancers(finalReducer);
 
