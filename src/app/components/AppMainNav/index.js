@@ -21,7 +21,7 @@ export default function AppMainNav() {
       <LinkContainer to={{ pathname: APP_LOADING_ROUTE }} style={{ visibility: ENV == 'dev' ? 'visible' : 'hidden' }}>
         <Button><FontAwesome name="hourglass-half" /></Button>
       </LinkContainer>
-      <LinkContainer to={{ pathname: AUTH_ROUTE }}>
+      <LinkContainer to={{ pathname: AUTH_ROUTE }} style={{ visibility: ENV == 'dev' ? 'visible' : 'hidden' }}>
         <Button><FontAwesome name="lock" /></Button>
       </LinkContainer>
       <LinkContainer to={{ pathname: FRIENDS_ROUTE }}>
