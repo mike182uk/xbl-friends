@@ -8,13 +8,50 @@ const constants = require('../common/constants');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
 const ipcMain = electron.ipcMain;
+const Menu = electron.Menu;
+const Tray = electron.Tray;
 
+const devMode = process.env.NODE_ENV == 'dev';
+const noXBL = process.env.NO_XBL == 'true';
 const windows = {};
 
 app.on('ready', () => {
+  if (!devMode) {
+    app.dock.hide();
+  }
+
+  let appMenu = Menu.buildFromTemplate([
+    {
+      label: 'Quit',
+      accelerator: 'Command+Q',
+      click: () => app.quit()
+    }
+  ]);
+
+  let appIcon = new Tray(path.join(`${__dirname}`, 'iconTemplate.png'));
+  appIcon.setToolTip('XBL Friends');
+
+  appIcon.on('click', (event, bounds) => {
+    let window = windows[constants.WINDOW_ID_APP];
+
+    if (window.isVisible()) {
+      window.hide();
+    } else {
+      window.setPosition(bounds.x, bounds.y);
+      window.show();
+    }
+  });
+
+  appIcon.on('right-click', () => {
+    appMenu.popup(windows[constants.WINDOW_ID_APP]);
+  });
+
   createAppWindow();
-  createXblWindow();
-  initIpc();
+
+  if (!noXBL) {
+    createXblWindow();
+    initIpc();
+  }
 });
 
 app.on('window-all-closed', () => {
@@ -23,60 +60,73 @@ app.on('window-all-closed', () => {
   }
 });
 
-app.on('activate', () => {
-  if (windows[constants.WINDOW_ID_APP] === null) {
-    createAppWindow();
-  }
-
-  if (windows[constants.WINDOW_ID_XBL] === null) {
-    createXblWindow();
-  }
-});
-
 function createAppWindow() {
-  let window = new BrowserWindow({
-    width: 1100,
-    height: 700
-  });
+  let windowOpts = {
+    width: 410,
+    height: 600,
+    show: false,
+    frame: false,
+    movable: false,
+    resizable: false,
+    fullscreenable: false,
+    minimizable: false,
+    maximizable: false,
+    closable: false
+  };
+
+  if (devMode) {
+    windowOpts = Object.assign({}, windowOpts, {
+      width: 1100,
+      height: 700,
+      show: true,
+      frame: true,
+      movable: true,
+      resizable: true,
+      closable: true
+    });
+  }
+
+  let window = new BrowserWindow(windowOpts);
 
   window.loadURL(`http://localhost:${process.env.DEV_SERVER_PORT}`);
 
-  if (process.env.NODE_ENV == 'dev') {
+  if (devMode) {
     window.webContents.openDevTools();
   }
 
-  window.on('closed', () => {
-    windows[constants.WINDOW_ID_APP] = null;
-  });
+  if (!devMode) {
+    window.on('blur', () => {
+      window.hide();
+    });
+  }
 
   windows[constants.WINDOW_ID_APP] = window;
 }
 
 function createXblWindow() {
-  if (process.env.NO_XBL) {
-    windows[constants.WINDOW_ID_XBL] = '__no_xbl__';
-
-    return;
-  }
-
-  let window = new BrowserWindow({
-    width: 1100,
-    height: 700,
+  let windowOpts = {
+    show: false,
     webPreferences: {
       nodeIntegration: true,
       preload: path.join(__dirname, 'xbl-window', 'preload.js')
     }
-  });
+  };
+
+  if (devMode) {
+    windowOpts = Object.assign({}, windowOpts, {
+      width: 1100,
+      height: 700,
+      show: true,
+    });
+  }
+
+  let window = new BrowserWindow(windowOpts);
 
   window.loadURL(constants.URL_FRIENDS);
 
-  if (process.env.NODE_ENV == 'dev') {
+  if (devMode) {
     window.webContents.openDevTools();
   }
-
-  window.on('closed', () => {
-    windows[constants.WINDOW_ID_XBL] = null;
-  });
 
   windows[constants.WINDOW_ID_XBL] = window;
 }

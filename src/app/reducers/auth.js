@@ -2,6 +2,7 @@ import {
   SUBMIT_CREDENTIALS,
   SUBMIT_AUTH_CODE,
   LOGGED_IN,
+  AUTHENTICATED,
   AUTH_CODE_REQUIRED,
   LOGIN_FAILED,
   AUTH_CODE_VERIFICATION_FAILED,
@@ -15,7 +16,7 @@ const initialState = {
   authorized: false,
   authCodeRequired: false,
   actionInProgress: false
-} 
+}
 
 export default function (state = initialState, action) {
   switch (action.type) {
@@ -35,6 +36,7 @@ export default function (state = initialState, action) {
         authCodeRequired: true
       });
 
+    case AUTHENTICATED:
     case LOGGED_IN:
       return Object.assign({}, state, {
         actionInProgress: false,

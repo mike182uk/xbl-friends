@@ -1,4 +1,5 @@
 import { routeActions } from 'react-router-redux';
+import { authenticated } from './auth';
 import { updateFriends } from './friends';
 import { init } from '../xbl';
 import {
@@ -30,6 +31,7 @@ export function loadApp() {
 
       if (isLoggedIn) {
         [
+          authenticated(),
           updateFriends(),
           routeActions.push(FRIENDS_ROUTE)
         ].map(dispatch);

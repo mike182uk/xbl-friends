@@ -18,6 +18,7 @@ export const CANCEL_AUTH_CODE_SUBMISSION = 'CANCEL_AUTH_CODE_SUBMISSION';
 export const REQUEST_SIGN_OUT = 'REQUEST_SIGN_OUT';
 export const LOGGED_OUT = 'LOGGED_OUT';
 export const LOGOUT_FAILED = 'LOGOUT_FAILED';
+export const AUTHENTICATED = 'AUTHENTICATED';
 
 export function submitCredentials(username, password) {
   return {
@@ -43,6 +44,12 @@ export function cancelAuthCodeSubmission() {
 export function loggedIn() {
   return {
     type: LOGGED_IN
+  }
+}
+
+export function authenticated() {
+  return {
+    type: AUTHENTICATED
   }
 }
 
