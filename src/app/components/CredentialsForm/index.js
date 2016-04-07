@@ -1,6 +1,5 @@
 import React from 'react';
-
-import { validateUsername, validatePassword } from '../../utils/validators';
+import validator from 'validator';
 
 import { Input } from 'react-bootstrap';
 import LoadingStateButton from '../LoadingStateButton';
@@ -16,13 +15,13 @@ export default class CredentialsForm extends React.Component {
   }
 
   validateUsername(username) {
-    let usernameValid = validateUsername(username);
+    let usernameValid = validator.isEmail(username);
 
     this.setState({ usernameValid });
   }
 
   validatePassword(password) {
-    let passwordValid = validatePassword(password);
+    let passwordValid = ! validator.isNull(password);
 
     this.setState({ passwordValid });
   }
@@ -48,7 +47,7 @@ export default class CredentialsForm extends React.Component {
           id="login_username"
           label="Xbox Live Email Address"
           bsStyle={this.state.usernameValid === false ? 'error' : null}
-          onKeyUp={e => this.validateUsername.call(this, e.value)}
+          onKeyUp={e => this.validateUsername.call(this, e.target.value)}
         />
         <Input
           type="password"
@@ -56,7 +55,7 @@ export default class CredentialsForm extends React.Component {
           id="login_password"
           label="Xbox Live Password"
           bsStyle={this.state.passwordValid === false ? 'error' : null}
-          onKeyUp={e => this.validatePassword.call(this, e.value)}
+          onKeyUp={e => this.validatePassword.call(this, e.target.value)}
         />
         <LoadingStateButton
           onClick={this.submitCredentials.bind(this)}

@@ -1,6 +1,5 @@
 import React from 'react';
-
-import { validateAuthCode } from '../../utils/validators';
+import validator from 'validator';
 
 import { Button, ButtonToolbar, Input } from 'react-bootstrap';
 import LoadingStateButton from '../LoadingStateButton';
@@ -15,7 +14,9 @@ export default class AuthCodeForm extends React.Component {
   }
 
   validateAuthCode(authCode) {
-    let authCodeValid = validateAuthCode(authCode);
+    let authCodeValid =
+      validator.isLength(authCode, { min: 6, max: 6 }) &&
+      validator.isNumeric(authCode);
 
     this.setState({ authCodeValid });
   }
@@ -44,7 +45,7 @@ export default class AuthCodeForm extends React.Component {
           id="login_auth_code"
           label="Auth Code"
           bsStyle={this.state.authCodeValid === false ? 'error' : null}
-          onKeyUp={e => this.validateAuthCode.call(this, e.value)}
+          onKeyUp={e => this.validateAuthCode.call(this, e.target.value)}
         />
         <ButtonToolbar>
           <LoadingStateButton
