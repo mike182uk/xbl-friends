@@ -56,6 +56,7 @@ export default class AuthCodeForm extends React.Component {
           label="Auth Code"
           bsStyle={this.getInputStyle(this.state.authCodeValid)}
           onKeyUp={e => this.validateAuthCode.call(this, e.target.value)}
+          disabled={this.props.verifying}
         />
         <ButtonToolbar>
           <LoadingStateButton

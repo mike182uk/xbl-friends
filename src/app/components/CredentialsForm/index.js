@@ -58,6 +58,7 @@ export default class CredentialsForm extends React.Component {
           label="Xbox Live Email Address"
           bsStyle={this.getInputStyle(this.state.usernameValid)}
           onKeyUp={e => this.validateUsername.call(this, e.target.value)}
+          disabled={this.props.authorizing}
         />
         <Input
           type="password"
@@ -66,6 +67,7 @@ export default class CredentialsForm extends React.Component {
           label="Xbox Live Password"
           bsStyle={this.getInputStyle(this.state.passwordValid)}
           onKeyUp={e => this.validatePassword.call(this, e.target.value)}
+          disabled={this.props.authorizing}
         />
         <LoadingStateButton
           onClick={this.submitCredentials.bind(this)}
