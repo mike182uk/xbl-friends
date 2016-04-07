@@ -35,6 +35,16 @@ export default class AuthCodeForm extends React.Component {
     this.props.onCancelAuthCodeSubmission();
   }
 
+  getInputStyle(state, value) {
+    if (state === null) return;
+
+    if (state === false) {
+      return 'error';
+    }
+
+    return 'success';
+  }
+
   render() {
     return (
       <form>
@@ -44,7 +54,7 @@ export default class AuthCodeForm extends React.Component {
           ref="authCode"
           id="login_auth_code"
           label="Auth Code"
-          bsStyle={this.state.authCodeValid === false ? 'error' : null}
+          bsStyle={this.getInputStyle(this.state.authCodeValid)}
           onKeyUp={e => this.validateAuthCode.call(this, e.target.value)}
         />
         <ButtonToolbar>

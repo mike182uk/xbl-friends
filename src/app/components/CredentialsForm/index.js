@@ -38,6 +38,16 @@ export default class CredentialsForm extends React.Component {
     }
   }
 
+  getInputStyle(state, value) {
+    if (state === null) return;
+
+    if (state === false) {
+      return 'error';
+    }
+
+    return 'success';
+  }
+
   render() {
     return (
       <form>
@@ -46,7 +56,7 @@ export default class CredentialsForm extends React.Component {
           ref="username"
           id="login_username"
           label="Xbox Live Email Address"
-          bsStyle={this.state.usernameValid === false ? 'error' : null}
+          bsStyle={this.getInputStyle(this.state.usernameValid)}
           onKeyUp={e => this.validateUsername.call(this, e.target.value)}
         />
         <Input
@@ -54,7 +64,7 @@ export default class CredentialsForm extends React.Component {
           ref="password"
           id="login_password"
           label="Xbox Live Password"
-          bsStyle={this.state.passwordValid === false ? 'error' : null}
+          bsStyle={this.getInputStyle(this.state.passwordValid)}
           onKeyUp={e => this.validatePassword.call(this, e.target.value)}
         />
         <LoadingStateButton
