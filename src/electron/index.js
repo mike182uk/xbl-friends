@@ -1,7 +1,6 @@
 'use strict';
 
 const devMode = process.env.NODE_ENV == 'dev';
-const noXBL = process.env.NO_XBL == 'true';
 
 const electron = require('electron');
 const path = require('path');
@@ -48,11 +47,8 @@ app.on('ready', () => {
   });
 
   createAppWindow();
-
-  if (!noXBL) {
-    createXblWindow();
-    initIpc();
-  }
+  createXblWindow();
+  initIpc();
 });
 
 app.on('window-all-closed', () => {
@@ -109,82 +105,133 @@ function createAppWindow() {
 function createXblWindow() {
   let windowOpts = {
     show: false,
+    width: 400,
+    height: 600,
+    center: true,
+    alwaysOnTop: true,
     webPreferences: {
       nodeIntegration: true,
-      preload: path.join(__dirname, 'xbl-window', 'preload.js')
+      preload: path.join(__dirname, 'xbl-window', 'preload.js'),
     }
   };
 
-  if (devMode) {
-    windowOpts = Object.assign({}, windowOpts, {
-      width: 1100,
-      height: 700,
-      show: true,
-    });
-  }
-
   let window = new BrowserWindow(windowOpts);
 
-  window.loadURL(constants.URL_FRIENDS);
+  let appWindowWebContents = windows[constants.WINDOW_ID_APP].webContents;
 
-  if (devMode) {
-    window.webContents.openDevTools();
-  }
+  // When the window is closed, instead of destroying just hide and let the app
+  // window know the window was closed. The only reason the window will be visible
+  // is because the user is authenticating. If they close the window, we assume
+  // they have cancelled the authorization process.
+  window.on('close', (event) => {
+    event.preventDefault();
+
+    window.hide();
+
+    appWindowWebContents.send(constants.IPC_CHANNEL_MAIN, {
+        type: constants.IPC_MESSAGE_TYPE_XBL_WINDOW_EVENT,
+        event: constants.XBL_WINDOW_EVENT_AUTH_CANCELLED
+      });
+  });
+
+  // After the first initial load, let the app window know this is complete. If
+  // we are on the friends page, then we are still authenticated and do not need a
+  // login. The app window will listen for this event and setup the initial view
+  // based on this.
+  window.webContents.once('did-finish-load', () => {
+    appWindowWebContents.send(constants.IPC_CHANNEL_MAIN, {
+        type: constants.IPC_MESSAGE_TYPE_XBL_WINDOW_EVENT,
+        event: constants.XBL_WINDOW_EVENT_INITIAL_LOAD_COMPLETE,
+        data: {
+          authenticated: window.getURL() == constants.URL_FRIENDS
+        }
+      });
+  });
+
+  window.loadURL(constants.URL_FRIENDS);
 
   windows[constants.WINDOW_ID_XBL] = window;
 }
 
 function initIpc() {
-  ipcMain.on(constants.IPC_CHANNEL_XBL_WINDOW_RPC, (event, message) => {
-    switch (message.type) {
-      case constants.IPC_MESSAGE_TYPE_REQ:
-        windows[constants.WINDOW_ID_XBL]
-          .webContents
-          .send(constants.IPC_CHANNEL_RPC_REQ, message);
-        break;
-      case constants.IPC_MESSAGE_TYPE_RES:
-        windows[constants.WINDOW_ID_APP]
-          .webContents
-          .send(constants.IPC_CHANNEL_RPC_RES, message);
-        break;
-    }
-  });
+  let xblWindow = windows[constants.WINDOW_ID_XBL];
+  let appWindow = windows[constants.WINDOW_ID_APP];
+  let xblWindowWebContents = xblWindow.webContents;
+  let appWindowWebContents = appWindow.webContents;
 
-  ipcMain.on(constants.IPC_CHANNEL_XBL_WINDOW, (event, message) => {
-    switch(message.cmd) {
-      case constants.XBL_WINDOW_CMD_NAVIGATE:
-        xblWindownNavigateAndWaitForDom(
-          message.data.url,
-          windows[message.from].webContents
-        );
-        break;
-      case constants.XBL_WINDOW_CMD_CLEAR_STORAGE:
-        xblWindowClearStorage(windows[message.from].webContents);
-        break;
-    }
-  });
-}
+  // listen for action requests on the main channel
+  ipcMain.on(constants.IPC_CHANNEL_MAIN, (event, message) => {
+    if (message.type == constants.IPC_MESSAGE_TYPE_XBL_WINDOW_ACTION) {
+      switch (message.action) {
+        // show the app window when login is requested. This will allow the user
+        // to proceed with authorization via the XBL window
+        case constants.XBL_WINDOW_ACTION_LOGIN:
+          xblWindow.show();
+          break;
 
-function xblWindownNavigateAndWaitForDom(url, webContentsToNotify) {
-  let xblWindowWebContents = windows[constants.WINDOW_ID_XBL].webContents;
+        case constants.XBL_WINDOW_ACTION_LOGOUT:
+          // clear XBL window session storage which will delete all cookies etc.
+          // assiociated with the XBL website. Once cleared, reload the friends
+          // URL which should redirect back to the login URL and send a message
+          // to the app window
+          xblWindowWebContents
+            .session
+            .clearStorageData(() => {
+              xblWindowWebContents.loadURL(constants.URL_FRIENDS);
 
-  xblWindowWebContents.once('dom-ready', () => {
-    webContentsToNotify.send(constants.IPC_CHANNEL_XBL_WINDOW_RES, {
-      cmd: constants.XBL_WINDOW_CMD_NAVIGATE,
-      data: {
-        current_url: xblWindowWebContents.getURL()
+              appWindowWebContents.send(constants.IPC_CHANNEL_MAIN, {
+                  type: constants.IPC_MESSAGE_TYPE_XBL_WINDOW_EVENT,
+                  event: constants.XBL_WINDOW_EVENT_LOGGED_OUT
+                });
+            });
+          break;
+
+        case constants.XBL_WINDOW_ACTION_RETRIEVE_FRIENDS:
+          // reload friends page to get latest data, then once loaded send message
+          // to XBL window to initiate trigger of friends retrieval
+          xblWindowWebContents.once('dom-ready', () => {
+            xblWindowWebContents.send(constants.IPC_CHANNEL_XBL_WINDOW, {
+              type: constants.IPC_MESSAGE_TYPE_XBL_WINDOW_ACTION,
+              action: constants.XBL_WINDOW_ACTION_RETRIEVE_FRIENDS
+            });
+          });
+
+          xblWindowWebContents.loadURL(constants.URL_FRIENDS);
+          break;
       }
-    });
+    }
   });
 
-  xblWindowWebContents.loadURL(url);
-}
+  // listen for events on the XBL window channel
+  ipcMain.on(constants.IPC_CHANNEL_XBL_WINDOW, (event, message) => {
+    if (message.type == constants.IPC_MESSAGE_TYPE_XBL_WINDOW_EVENT) {
+      switch (message.event) {
+        case constants.XBL_WINDOW_EVENT_FRIENDS_RETRIEVED:
+          // forward on message to app window
+          appWindowWebContents.send(constants.IPC_CHANNEL_MAIN, {
+              type: constants.IPC_MESSAGE_TYPE_XBL_WINDOW_EVENT,
+              event: constants.XBL_WINDOW_EVENT_FRIENDS_RETRIEVED,
+              data: message.data
+            });
+          break;
+      }
+    }
+  });
 
-function xblWindowClearStorage(webContentsToNotify) {
-  windows[constants.WINDOW_ID_XBL].webContents.session.clearStorageData(() => {
-    webContentsToNotify.send(constants.IPC_CHANNEL_XBL_WINDOW_RES, {
-      cmd: constants.XBL_WINDOW_CMD_CLEAR_STORAGE,
-      data: {}
-    });
+  // Watch navigation changes to work out when to hide the window. The window should
+  // be hidden if it is visible and it has just navigated to the friends page as this
+  // means the user is now logged in.
+  xblWindowWebContents.on('did-navigate', () => {
+    if (xblWindowWebContents.getURL() == constants.URL_FRIENDS && xblWindow.isVisible()) {
+      xblWindow.hide();
+
+      // wait for this page to finish loading before we trigger any other page loads
+      xblWindowWebContents.once('did-finish-load', () => {
+        appWindowWebContents.send(constants.IPC_CHANNEL_MAIN, {
+            type: constants.IPC_MESSAGE_TYPE_XBL_WINDOW_EVENT,
+            event: constants.XBL_WINDOW_EVENT_LOGGED_IN,
+          });
+      });
+    }
   });
 }

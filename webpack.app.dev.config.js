@@ -1,6 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
-const webpack = require('webpack');
 
 const config = {
   devtool: 'source-map',
@@ -63,17 +62,5 @@ const config = {
     require('postcss-cssnext')
   ]
 };
-
-if (process.env.NO_XBL) {
-  config.resolve = {
-    alias: {
-      xbl: path.resolve(__dirname, 'src/app/xbl-dev.js')
-    }
-  }
-
-  config.plugins.push(
-    new webpack.NormalModuleReplacementPlugin(/^.+\/xbl$/, 'xbl')
-  );
-}
 
 module.exports = config;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { updateFriends } from '../../actions/friends';
+import { friendsRetrievalRequested } from '../../actions/friends';
 
 import FriendsGroup from '../../components/FriendsGroup';
 import UpdateFriends from '../../components/UpdateFriends';
@@ -43,7 +43,7 @@ const Friends = class extends React.Component {
         <UpdateFriends
           updating={updateInProgress}
           lastUpdatedAt={lastUpdatedAt}
-          onRequestFriendsUpdate={() => dispatch(updateFriends())}
+          onRequestFriendsUpdate={() => dispatch(friendsRetrievalRequested())}
         />
 
         {groups.map((group, index) =>

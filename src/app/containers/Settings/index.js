@@ -9,7 +9,7 @@ import {
   setBgUpdateInterval
 } from '../../actions/settings';
 
-import { logoutOfXBL } from '../../actions/auth';
+import { logoutRequested } from '../../actions/auth';
 
 const Settings = class extends React.Component {
   render() {
@@ -28,7 +28,7 @@ const Settings = class extends React.Component {
           onChangeBgUpdateInterval={interval =>
             dispatch(setBgUpdateInterval(interval))
           }
-          onSignOut={() => dispatch(logoutOfXBL())}
+          onSignOut={() => dispatch(logoutRequested())}
           signingOut={actionInProgress}
         />
       </div>

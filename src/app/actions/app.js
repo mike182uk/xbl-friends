@@ -1,7 +1,8 @@
 import { routeActions } from 'react-router-redux';
 import { authenticated } from './auth';
-import { updateFriends } from './friends';
-import { init } from '../xbl';
+import { friendsRetrievalRequested } from './friends';
+import { requestAuthStatus as ipcRequestAuthStatus } from '../ipc';
+
 import {
   AUTH as AUTH_ROUTE,
   FRIENDS as FRIENDS_ROUTE
@@ -22,22 +23,18 @@ export function appLoaded() {
   }
 }
 
-export function loadApp() {
+export function appLoadSuccessful(isAuthenticated) {
   return dispatch => {
-    dispatch(appLoading());
+    dispatch(appLoaded());
 
-    init().then(isLoggedIn => {
-      dispatch(appLoaded());
-
-      if (isLoggedIn) {
-        [
-          authenticated(),
-          updateFriends(),
-          routeActions.push(FRIENDS_ROUTE)
-        ].map(dispatch);
-      } else {
-        dispatch(routeActions.push(AUTH_ROUTE));
-      }
-    });
+    if (isAuthenticated) {
+      [
+        authenticated(),
+        friendsRetrievalRequested(),
+        routeActions.push(FRIENDS_ROUTE)
+      ].map(dispatch);
+    } else {
+      dispatch(routeActions.push(AUTH_ROUTE));
+    }
   }
 }

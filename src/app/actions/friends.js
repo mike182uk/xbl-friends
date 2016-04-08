@@ -1,54 +1,34 @@
 import { routeActions } from 'react-router-redux'
 
-import { fetchFriends } from '../xbl';
+import { requestFriendsRetrieval as ipcRequestFriendsRetrieval } from '../ipc';
 
-export const REQUEST_FRIENDS_UPDATE = 'REQUEST_FRIENDS_UPDATE';
-export const BG_REQUEST_FRIENDS_UPDATE = 'BG_REQUEST_FRIENDS_UPDATE';
-export const FRIENDS_UPDATED = 'FRIENDS_UPDATED';
-export const FRIENDS_UPDATE_FAILED = 'FRIENDS_UPDATE_FAILED';
+export const REQUEST_FRIENDS_RETRIEVAL = 'REQUEST_FRIENDS_RETRIEVAL';
+export const BG_REQUEST_FRIENDS_RETRIEVAL = 'BG_REQUEST_FRIENDS_RETRIEVAL';
+export const FRIENDS_RETRIEVED = 'FRIENDS_RETRIEVED';
 
-export function requestFriendsUpdate() {
+export function requestFriendsRetrieval() {
   return {
-    type: REQUEST_FRIENDS_UPDATE
+    type: REQUEST_FRIENDS_RETRIEVAL
   }
 }
 
-export function bgRequestFriendsUpdate() {
+export function bgRequestFriendsRetrieval() {
   return {
-    type: BG_REQUEST_FRIENDS_UPDATE
+    type: BG_REQUEST_FRIENDS_RETRIEVAL
   }
 }
 
-export function friendsUpdated(friends) {
+export function friendsRetrievalRequested(bg = false) {
+  return dispatch => {
+    dispatch(bg ? bgRequestFriendsRetrieval() : requestFriendsRetrieval());
+
+    return ipcRequestFriendsRetrieval();
+  }
+}
+
+export function friendsRetrievalSuccessful(friends) {
   return {
-    type: FRIENDS_UPDATED,
+    type: FRIENDS_RETRIEVED,
     friends
-  }
-}
-
-export function friendsUpdateFailed(error) {
-  return {
-    type: FRIENDS_UPDATE_FAILED,
-    error
-  }
-}
-
-export function updateFriends() {
-  return dispatch => {
-    dispatch(requestFriendsUpdate());
-
-    return fetchFriends()
-      .then(friends => dispatch(friendsUpdated(friends)) )
-      .catch(err => dispatch(friendsUpdateFailed(err)) );
-  }
-}
-
-export function bgUpdateFriends() {
-  return dispatch => {
-    dispatch(bgRequestFriendsUpdate());
-
-    return fetchFriends()
-      .then(friends => dispatch(friendsUpdated(friends)) )
-      .catch(err => dispatch(friendsUpdateFailed(err)) );
   }
 }

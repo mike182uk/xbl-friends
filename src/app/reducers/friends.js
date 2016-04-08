@@ -1,7 +1,7 @@
 import {
-  REQUEST_FRIENDS_UPDATE,
-  BG_REQUEST_FRIENDS_UPDATE,
-  FRIENDS_UPDATED,
+  REQUEST_FRIENDS_RETRIEVAL,
+  BG_REQUEST_FRIENDS_RETRIEVAL,
+  FRIENDS_RETRIEVED,
   FRIENDS_UPDATE_FAILED
 } from '../actions/friends';
 
@@ -15,13 +15,13 @@ const initialState = {
 
 export default function (state = initialState, action) {
   switch (action.type) {
-    case REQUEST_FRIENDS_UPDATE:
-    case BG_REQUEST_FRIENDS_UPDATE:
+    case REQUEST_FRIENDS_RETRIEVAL:
+    case BG_REQUEST_FRIENDS_RETRIEVAL:
       return Object.assign({}, state, {
         updateInProgress: true
       });
 
-    case FRIENDS_UPDATED:
+    case FRIENDS_RETRIEVED:
       return Object.assign({}, state, {
         updateInProgress: false,
         lastUpdatedAt: new Date(),

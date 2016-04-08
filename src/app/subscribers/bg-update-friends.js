@@ -1,4 +1,4 @@
-import { bgUpdateFriends } from '../actions/friends';
+import { friendsRetrievalRequested } from '../actions/friends';
 
 export default function (store) {
   let bgUpdate = false;
@@ -32,7 +32,7 @@ export default function (store) {
     if (!bgUpdateTimer && state.settings.friends.bgUpdate) {
       bgUpdateTimer = setInterval(() => {
         if (!state.friends.updateInProgress) {
-          store.dispatch(bgUpdateFriends());
+          store.dispatch(friendsRetrievalRequested(true));
         }
       }, state.settings.friends.bgUpdateInterval);
 

@@ -2,8 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux'
 import { Router, Route, IndexRoute, hashHistory } from 'react-router';
-import { loadApp } from './actions/app';
+import { appLoading } from './actions/app';
 import { requireAppLoaded as requireAppLoadedHook } from './routing/hooks';
+import { init as initIpc } from './ipc';
 
 import App from './containers/App';
 import Friends from './containers/Friends';
@@ -23,8 +24,11 @@ import {
 
 import store from './store';
 
+// initialize IPC
+initIpc(store.dispatch);
+
 // initialize the app
-store.dispatch(loadApp());
+store.dispatch(appLoading());
 
 // setup hooks
 const requireAppLoaded = requireAppLoadedHook(store);

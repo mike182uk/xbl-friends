@@ -1,6 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
-const webpack = require('webpack');
 
 const config = {
   entry: path.resolve(__dirname, 'src/app/index.js'),

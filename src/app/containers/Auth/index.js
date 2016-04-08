@@ -1,59 +1,26 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import {
-  cancelAuthCodeSubmission,
-  loginToXBL,
-  verifyXBLAuthCode
-} from '../../actions/auth';
+import { loginRequested } from '../../actions/auth';
 
-import AppError from '../../components/AppError';
-import AuthCodeForm from '../../components/AuthCodeForm';
-import CredentialsForm from '../../components/CredentialsForm';
+import LoadingStateButton from '../../components/LoadingStateButton';
 
 import styles from './style.css';
 
 const Auth = class extends React.Component {
-  getError() {
-    if (this.props.error) {
-      return (
-        <AppError message={this.props.error} />
-      );
-    }
-  }
-
-  getForm() {
-    return this.props.authCodeRequired ?
-      this.getAuthcodeForm() :
-      this.getCredentialsForm();
-  }
-
-  getAuthcodeForm() {
-    return (
-      <AuthCodeForm
-        onSubmit={authCode => this.props.dispatch(verifyXBLAuthCode(authCode))}
-        onCancelAuthCodeSubmission={() => this.props.dispatch(cancelAuthCodeSubmission())}
-        verifying={this.props.actionInProgress}
-      />
-    );
-  }
-
-  getCredentialsForm(){
-    return (
-      <CredentialsForm
-        onSubmit={(username, password) =>
-          this.props.dispatch(loginToXBL(username, password))
-        }
-        authorizing={this.props.actionInProgress}
-      />
-    );
-  }
-
   render() {
+    const { dispatch, actionInProgress } = this.props;
+
     return (
       <div className={styles.auth} style={{ minHeight: window.innerHeight }}>
-        {this.getError()}
-        {this.getForm()}
+        <p className={`lead ${styles.login}`}>You first need to sign in to your Xbox Live account.</p>
+        <LoadingStateButton
+          onClick={() => dispatch(loginRequested())}
+          isLoading={actionInProgress}
+          loadingText="Authenticating..."
+          bsStyle="primary"
+          block={false}
+        >Sign In To Xbox Live</LoadingStateButton>
       </div>
     );
   }
@@ -61,8 +28,6 @@ const Auth = class extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    error: state.app.error,
-    authCodeRequired: state.auth.authCodeRequired,
     actionInProgress: state.auth.actionInProgress
   }
 }
