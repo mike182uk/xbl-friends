@@ -1,11 +1,15 @@
 {
+  "name": "xbl-friends",
   "scripts": {
     "dev-server": "NODE_ENV=dev DEV_SERVER_PORT=3000 webpack-dev-server --dev --colors --hot --inline --port 3000 --content-base ./src/app --config ./webpack.app.dev.config.js",
-    "dev-app": "NODE_ENV=dev DEV_SERVER_PORT=3000 electron src/electron/main.js",
+    "dev-app": "NODE_ENV=dev DEV_SERVER_PORT=3000 electron src/electron/index.js",
     "dev-server-no-xbl": "NO_XBL=true npm run dev-server",
     "dev-app-no-xbl": "NO_XBL=true npm run dev-app",
-    "dev-app-int": "DEV_SERVER_PORT=3000 electron src/electron/main.js",
-    "dev-app-int-no-xbl": "NO_XBL=true DEV_SERVER_PORT=3000 electron src/electron/main.js"
+    "dev-app-int": "NODE_ENV=dev DEV_SERVER_PORT=3000 electron src/electron/index.js",
+    "dev-app-int-no-xbl": "NO_XBL=true npm run dev-app-int",
+    "build": "rm -rf ./build/* && BABEL_ENV=prod webpack --config ./webpack.app.config.js && cp -r ./{src/electron/*,src/common,package.json} ./build/",
+    "built-app": "electron ./build/index.js",
+    "package": "rm -rf ./dist/* && electron-packager ./build --platform darwin --arch x64 --out ./dist --icon ./build/xbl-friends.icns --asar"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.1",
@@ -16,6 +20,7 @@
     "babel-preset-es2015": "^6.3.13",
     "babel-preset-react": "^6.3.13",
     "css-loader": "^0.23.1",
+    "electron-packager": "^6.0.1",
     "electron-prebuilt": "^0.36.4",
     "file-loader": "^0.8.5",
     "html-webpack-plugin": "^2.7.1",

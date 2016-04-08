@@ -1,9 +1,12 @@
 'use strict';
 
+const devMode = process.env.NODE_ENV == 'dev';
+const noXBL = process.env.NO_XBL == 'true';
+
 const electron = require('electron');
 const path = require('path');
 
-const constants = require('../common/constants');
+const constants = require(devMode ? '../common/constants' : './common/constants');
 
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
@@ -11,8 +14,6 @@ const ipcMain = electron.ipcMain;
 const Menu = electron.Menu;
 const Tray = electron.Tray;
 
-const devMode = process.env.NODE_ENV == 'dev';
-const noXBL = process.env.NO_XBL == 'true';
 const windows = {};
 
 app.on('ready', () => {
@@ -88,7 +89,9 @@ function createAppWindow() {
 
   let window = new BrowserWindow(windowOpts);
 
-  window.loadURL(`http://localhost:${process.env.DEV_SERVER_PORT}`);
+  let windowUrl = devMode ? `http://localhost:${process.env.DEV_SERVER_PORT}` : `file://${path.resolve(__dirname, 'app/index.html')}`;
+
+  window.loadURL(windowUrl);
 
   if (devMode) {
     window.webContents.openDevTools();
