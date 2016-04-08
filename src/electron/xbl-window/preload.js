@@ -13,7 +13,7 @@ ipcRenderer.on(constants.IPC_CHANNEL_RPC_REQ, function(event, message) {
       verifyAuthCode(message.data.authCode);
       break;
     case constants.IPC_RPC_GET_FRIENDS:
-      getFriends()
+      getFriends();
       break;
   }
 });
@@ -27,23 +27,33 @@ function sendXblWindowRpcRes(action, data) {
 }
 
 function login(username, password) {
-  var emailInput = document.querySelector('[name=loginfmt]');
-  var passwordInput = document.querySelector('[name=passwd]');
+  var changeEvent = new Event('change');
+
+  var emailInput = document.querySelector('input[type=email][name=loginfmt]');
+  var passwordInput = document.querySelector('input[type=password][name=passwd]');
   var keepMeSignedInCheckbox = document.querySelector('[name=KMSI]');
-  var signInButton = document.querySelector('[name=SI]');
+  var signInButton = document.querySelector('input[type=submit][value="Sign in"]');
 
   emailInput.value = username;
+  emailInput.dispatchEvent(changeEvent);
+
   passwordInput.value = password;
+  passwordInput.dispatchEvent(changeEvent);
+
   keepMeSignedInCheckbox.checked = true;
   signInButton.click();
 }
 
 function verifyAuthCode(authCode) {
+  var changeEvent = new Event('change');
+
   var oneTimeCodeInput = document.querySelector('[name=otc]');
   var dontAskForCode = document.querySelector('[name=AddTD]');
   var submitButton = document.querySelector('input[type=submit][value=Submit]');
 
   oneTimeCodeInput.value = authCode;
+  oneTimeCodeInput.dispatchEvent(changeEvent);
+
   dontAskForCode.checked = true;
   submitButton.click();
 }
@@ -79,36 +89,26 @@ function getFriends() {
 }
 
 window.addEventListener('load', function() {
+  var title = document.querySelector('title').innerHTML;
+
+
   // If login page
-  if (typeof evt_Login_onload == 'function') {
-    var old_evt_Login_onload = evt_Login_onload;
+  if (title == 'Sign in to your Microsoft account') {
+    var usernameError = document.querySelector('#usernameError');
 
-    evt_Login_onload = function() {
-      old_evt_Login_onload(arguments);
-
-      var lockoutError = document.querySelector('#idTD_LockoutError');
-      var loginError = document.querySelector('#idTd_Tile_ErrorMsg_Login');
-
-      if (lockoutError || loginError && loginError.innerHTML != '') {
-        sendXblWindowRpcRes(constants.IPC_RPC_LOGIN, { status: false });
-      }
+    if (usernameError) {
+      sendXblWindowRpcRes(constants.IPC_RPC_LOGIN, { status: false });
     }
   }
 
   // If 2FA page
-  if (typeof evt_SA_onload == 'function') {
-    var old_evt_SA_onload = evt_SA_onload;
+  if (title == 'Help us protect your account') {
+    var oneTimeCodeInputError = document.querySelector('#idSpan_SAOTCC_Error_OTC');
 
-    evt_SA_onload = function() {
-      old_evt_SA_onload(arguments);
-
-      var oneTimeCodeInputError = document.querySelector('#idSpan_SAOTCC_Error_OTC');
-
-      if (oneTimeCodeInputError && oneTimeCodeInputError.innerHTML != '') {
-        sendXblWindowRpcRes(constants.IPC_RPC_VERIFY_AUTH_CODE, { status: false });
-      } else {
-        sendXblWindowRpcRes(constants.IPC_RPC_LOGIN, { status: true, authCodeRequired: true });
-      }
+    if (oneTimeCodeInputError && oneTimeCodeInputError.innerHTML != '') {
+      sendXblWindowRpcRes(constants.IPC_RPC_VERIFY_AUTH_CODE, { status: false });
+    } else {
+      sendXblWindowRpcRes(constants.IPC_RPC_LOGIN, { status: true, authCodeRequired: true });
     }
   }
 
