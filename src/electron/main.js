@@ -58,6 +58,10 @@ app.on('window-all-closed', () => {
   }
 });
 
+app.on('before-quit', () => {
+  windows[constants.WINDOW_ID_XBL].forceClose = true;
+});
+
 function createAppWindow() {
   let windowOpts = {
     width: 410,
@@ -103,6 +107,10 @@ function createAppWindow() {
   }
 
   windows[constants.WINDOW_ID_APP] = window;
+
+  window.on('closed', () => {
+    windows[constants.WINDOW_ID_APP] = null;
+  });
 }
 
 function createXblWindow() {
@@ -126,6 +134,8 @@ function createXblWindow() {
   // is because the user is authenticating. If they close the window, we assume
   // they have cancelled the authorization process.
   window.on('close', (event) => {
+    if (window.forceClose) return;
+
     event.preventDefault();
 
     window.hide();
@@ -153,6 +163,10 @@ function createXblWindow() {
   window.loadURL(constants.URL_FRIENDS);
 
   windows[constants.WINDOW_ID_XBL] = window;
+
+  window.on('closed', () => {
+    windows[constants.WINDOW_ID_XBL] = null;
+  });
 }
 
 function initIpc() {
