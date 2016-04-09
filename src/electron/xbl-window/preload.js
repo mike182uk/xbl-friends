@@ -1,8 +1,12 @@
-window.requireNode = window.require;
-window.require = undefined;
+var devMode = process.env.NODE_ENV == 'dev';
+var intMode = process.env.NODE_ENV == 'int';
 
-var constants = requireNode(__dirname + '/../../common/constants');
-var ipcRenderer = requireNode('electron').ipcRenderer;
+var nodeRequire = require;
+
+delete window.require;
+
+var constants = nodeRequire((devMode || intMode) ? '../../common/constants' : '../common/constants');
+var ipcRenderer = nodeRequire('electron').ipcRenderer;
 
 ipcRenderer.on(constants.IPC_CHANNEL_XBL_WINDOW, function(event, message) {
   if (message.type == constants.IPC_MESSAGE_TYPE_XBL_WINDOW_ACTION) {

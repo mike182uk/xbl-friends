@@ -111,7 +111,6 @@ function createXblWindow() {
     center: true,
     alwaysOnTop: true,
     webPreferences: {
-      nodeIntegration: true,
       preload: path.join(__dirname, 'xbl-window', 'preload.js'),
     }
   };
