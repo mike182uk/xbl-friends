@@ -1,11 +1,8 @@
-var devMode = process.env.NODE_ENV == 'dev';
-var intMode = process.env.NODE_ENV == 'int';
-
 var nodeRequire = require;
 
 delete window.require;
 
-var constants = nodeRequire((devMode || intMode) ? '../../common/constants' : '../common/constants');
+var constants = nodeRequire('../../common/constants');
 var ipcRenderer = nodeRequire('electron').ipcRenderer;
 
 ipcRenderer.on(constants.IPC_CHANNEL_XBL_WINDOW, function(event, message) {

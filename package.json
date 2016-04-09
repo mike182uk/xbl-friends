@@ -2,11 +2,11 @@
   "name": "xbl-friends",
   "scripts": {
     "dev-server": "NODE_ENV=dev DEV_SERVER_PORT=3000 webpack-dev-server --dev --colors --hot --inline --port 3000 --content-base ./src/app --config ./webpack.app.dev.config.js",
-    "dev-app": "NODE_ENV=dev DEV_SERVER_PORT=3000 electron src/electron/index.js",
-    "dev-app-int": "NODE_ENV=int DEV_SERVER_PORT=3000 electron src/electron/index.js",
-    "build": "rm -rf ./build/* && BABEL_ENV=prod webpack --config ./webpack.app.config.js && cp -r ./{src/electron/*,src/common,package.json} ./build/",
+    "dev-app": "NODE_ENV=dev DEV_SERVER_PORT=3000 electron src/electron/main.js",
+    "dev-app-int": "NODE_ENV=int DEV_SERVER_PORT=3000 electron src/electron/main.js",
+    "build": "rm -rf ./build/* && BABEL_ENV=prod webpack --config ./webpack.app.config.js && cp -r ./{src/electron,src/common,package.json} ./build/ && echo \"require('./electron/main.js');\" > ./build/index.js",
     "built-app": "electron ./build/index.js",
-    "package": "rm -rf ./dist/* && electron-packager ./build --platform darwin --arch x64 --out ./dist --icon ./build/xbl-friends.icns --asar"
+    "package": "rm -rf ./dist/* && electron-packager ./build --platform darwin --arch x64 --out ./dist --icon ./build/electron/xbl-friends.icns --asar"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.1",

@@ -6,7 +6,7 @@ const intMode = process.env.NODE_ENV == 'int';
 const electron = require('electron');
 const path = require('path');
 
-const constants = require((devMode || intMode) ? '../common/constants' : './common/constants');
+const constants = require(path.resolve(__dirname, '../common/constants'));
 
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
@@ -86,7 +86,9 @@ function createAppWindow() {
 
   let window = new BrowserWindow(windowOpts);
 
-  let windowUrl = (devMode || intMode) ? `http://localhost:${process.env.DEV_SERVER_PORT}` : `file://${path.resolve(__dirname, 'app/index.html')}`;
+  let windowUrl = (devMode || intMode) ?
+    `http://localhost:${process.env.DEV_SERVER_PORT}` :
+    `file://${path.resolve(__dirname, '../app/index.html')}`;
 
   window.loadURL(windowUrl);
 
