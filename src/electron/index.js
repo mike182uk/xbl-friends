@@ -225,6 +225,7 @@ function initIpc() {
   xblWindowWebContents.on('did-navigate', () => {
     if (xblWindowWebContents.getURL() == constants.URL_FRIENDS && xblWindow.isVisible()) {
       xblWindow.hide();
+      appWindow.show();
 
       // wait for this page to finish loading before we trigger any other page loads
       xblWindowWebContents.once('did-finish-load', () => {
