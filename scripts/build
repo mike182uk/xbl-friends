@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+rm -rf ./build/*
+
+BABEL_ENV=prod webpack --config ./webpack.app.config.js
+
+cp -r ./{src/electron,src/common,package.json} ./build/
+
+echo "require('./electron/main.js');" > ./build/index.js
