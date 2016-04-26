@@ -1,12 +1,22 @@
 {
   "name": "xbl-friends",
   "scripts": {
+    "info": "npm-scripts-info",
     "dev:server": "scripty",
     "dev:app": "scripty",
     "dev:app-int": "scripty",
     "build": "scripty",
     "built-app": "scripty",
     "package": "scripty"
+  },
+  "scripts-info": {
+  	"info": "Display scripts info",
+    "dev:server": "Start the dev server used by the application when in dev mode",
+    "dev:app": "Start the application in dev mode (make sure you start the dev server first)",
+    "dev:app-int": "Start the application in integration mode (make sure you start the dev server first)",
+    "build": "Build the application",
+    "built-app": "Start the built application",
+    "package": "Package the built application"
   },
   "devDependencies": {
     "autoprefixer": "^6.3.1",
@@ -21,6 +31,7 @@
     "electron-prebuilt": "^0.36.4",
     "file-loader": "^0.8.5",
     "html-webpack-plugin": "^2.7.1",
+    "npm-scripts-info": "^0.3.6",
     "postcss-cssnext": "^2.4.0",
     "postcss-loader": "^0.8.0",
     "react-transform-catch-errors": "^1.0.1",
