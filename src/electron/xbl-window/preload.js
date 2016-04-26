@@ -1,33 +1,20 @@
-var nodeRequire = require;
+'use strict';
+
+const nodeRequire = require;
 
 delete window.require;
 
-var constants = nodeRequire('../../common/constants');
-var ipcRenderer = nodeRequire('electron').ipcRenderer;
+const _ = nodeRequire('lodash');
+const ipcRenderer = nodeRequire('electron').ipcRenderer;
+const constants = nodeRequire('../../common/constants');
 
-ipcRenderer.on(constants.IPC_CHANNEL_XBL_WINDOW, function(event, message) {
-  if (message.type == constants.IPC_MESSAGE_TYPE_XBL_WINDOW_ACTION) {
-    switch (message.action) {
-      case constants.XBL_WINDOW_ACTION_RETRIEVE_FRIENDS:
-        retrieveFriends();
-        break;
-    }
-  }
-});
+const retrieveFriends = () => {
+  let data = [];
+  let friends = Array.from(document.querySelectorAll('[data-gamertag]'))
+    .filter(friend => friend.getAttribute('data-isfriend') == 'True');
 
-function retrieveFriends() {
-  var friends = document.querySelectorAll('[data-gamertag]');
-  friends = Array.prototype.slice.call(friends);
-
-  friends = friends.filter(function(friend){
-    return friend.getAttribute('data-isfriend') == 'True';
-  });
-
-  var data = [];
-  var friendsAdded = [];
-
-  friends.forEach(function(friend) {
-    if (!friendsAdded.includes(friend.getAttribute('data-gamertag'))) {
+  friends.forEach(friend => {
+    if (!_.find(data, { gamertag: friend.getAttribute('data-gamertag') })) {
       data.push({
         gamertag: friend.getAttribute('data-gamertag'),
         favourite: friend.getAttribute('data-isfavorite') == 'True',
@@ -37,8 +24,6 @@ function retrieveFriends() {
         secondaryInfo: friend.querySelector('.secondaryInfo').innerHTML,
         gamerpic: friend.querySelector('.gamerpic').src
       });
-
-      friendsAdded.push(friend.getAttribute('data-gamertag'));
     }
   });
 
@@ -50,3 +35,13 @@ function retrieveFriends() {
     }
   });
 }
+
+ipcRenderer.on(constants.IPC_CHANNEL_XBL_WINDOW, (event, message) => {
+  if (message.type == constants.IPC_MESSAGE_TYPE_XBL_WINDOW_ACTION) {
+    switch (message.action) {
+      case constants.XBL_WINDOW_ACTION_RETRIEVE_FRIENDS:
+        retrieveFriends();
+        break;
+    }
+  }
+});
