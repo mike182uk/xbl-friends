@@ -8,7 +8,7 @@
     "build": "scripty",
     "built-app": "scripty",
     "package": "scripty",
-    "lint": "standard 'src/**/*.js*'"
+    "lint": "standard 'src/**/*.js*' './webpack*.js'"
   },
   "scripts-info": {
     "info": "Display scripts info",

@@ -1,5 +1,5 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const path = require('path')
 
 const config = {
   entry: path.resolve(__dirname, 'src/app/index.js'),
@@ -58,6 +58,6 @@ const config = {
   postcss: [
     require('postcss-cssnext')
   ]
-};
+}
 
-module.exports = config;
+module.exports = config
