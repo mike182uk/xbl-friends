@@ -2,6 +2,7 @@
 
 const devMode = process.env.NODE_ENV === 'dev'
 const intMode = process.env.NODE_ENV === 'int'
+const showXBL = process.env.SHOW_XBL === 'true'
 
 const electron = require('electron')
 const path = require('path')
@@ -125,6 +126,15 @@ function createXblWindow () {
     }
   }
 
+  if (showXBL) {
+    windowOpts = Object.assign({}, windowOpts, {
+      show: true,
+      width: 1100,
+      height: 700,
+      alwaysOnTop: false
+    })
+  }
+
   let window = new BrowserWindow(windowOpts)
 
   let appWindowWebContents = windows[constants.WINDOW_ID_APP].webContents
@@ -161,6 +171,10 @@ function createXblWindow () {
   })
 
   window.loadURL(constants.URL_FRIENDS)
+
+  if (showXBL) {
+    window.webContents.openDevTools()
+  }
 
   windows[constants.WINDOW_ID_XBL] = window
 
@@ -238,8 +252,16 @@ function initIpc () {
   // be hidden if it is visible and it has just navigated to the friends page as this
   // means the user is now logged in.
   xblWindowWebContents.on('did-navigate', () => {
-    if (xblWindowWebContents.getURL() === constants.URL_FRIENDS && xblWindow.isVisible()) {
-      xblWindow.hide()
+    let loggedInMessageSent = false
+    let condition = (showXBL) ? false : xblWindow.isVisible();
+
+    if (xblWindowWebContents.getURL() === constants.URL_FRIENDS && condition) {
+      if (!showXBL) {
+        xblWindow.hide()
+      } else {
+        loggedInMessageSent = true
+      }
+
       appWindow.show()
 
       // wait for this page to finish loading before we trigger any other page loads
