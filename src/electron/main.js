@@ -73,8 +73,7 @@ function createAppWindow () {
     resizable: false,
     fullscreenable: false,
     minimizable: false,
-    maximizable: false,
-    closable: false
+    maximizable: false
   }
 
   if (devMode) {
@@ -84,8 +83,7 @@ function createAppWindow () {
       show: true,
       frame: true,
       movable: true,
-      resizable: true,
-      closable: true
+      resizable: true
     })
   }
 
