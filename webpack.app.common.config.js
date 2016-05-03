@@ -56,7 +56,6 @@ const config = {
     })
   ],
   postcss: [
-    require('autoprefixer'),
     require('postcss-cssnext')
   ]
 };
