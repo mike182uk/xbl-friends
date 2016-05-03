@@ -1,14 +1,14 @@
-import React from 'react';
+import React from 'react'
 
-import { Image } from 'react-bootstrap';
+import { Image } from 'react-bootstrap'
 
-import styles from './style.css';
+import styles from './style.css'
 
-export default function Friend(props) {
+export default function Friend (props) {
   const classNames = [
     styles.friend,
     props.online ? styles.online : styles.offline
-  ].join(' ');
+  ].join(' ')
 
   return (
     <div className={classNames}>
@@ -22,5 +22,5 @@ export default function Friend(props) {
         {props.secondaryStatus ? <span className={styles.secondaryStatus}>{props.secondaryStatus}</span> : ''}
       </div>
     </div>
-  );
+  )
 }

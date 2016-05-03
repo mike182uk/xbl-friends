@@ -1,12 +1,8 @@
-import deepAssign from 'deep-assign';
+import deepAssign from 'deep-assign'
 
-import {
-  SET_NOTIFICATION_PREFERENCE,
-  SET_BG_UPDATE_STATUS,
-  SET_BG_UPDATE_INTERVAL
-} from '../actions/settings';
+import { SET_NOTIFICATION_PREFERENCE, SET_BG_UPDATE_STATUS, SET_BG_UPDATE_INTERVAL } from '../actions/settings'
 
-import { NOTIFICATION_PREFERENCE_FRIEND_ONLY } from '../constants/settings';
+import { NOTIFICATION_PREFERENCE_FRIEND_ONLY } from '../constants/settings'
 
 const initialState = {
   notifications: {
@@ -25,23 +21,23 @@ export default function (state = initialState, action) {
         notifications: {
           preference: action.preference
         }
-      });
+      })
 
     case SET_BG_UPDATE_STATUS:
       return deepAssign({}, state, {
         friends: {
           bgUpdate: action.status
         }
-      });
+      })
 
     case SET_BG_UPDATE_INTERVAL:
       return deepAssign({}, state, {
         friends: {
           bgUpdateInterval: action.interval
         }
-      });
+      })
 
     default:
-      return state;
+      return state
   }
 }

@@ -1,8 +1,8 @@
-import React from 'react';
+import React from 'react'
 
-import Friend from '../Friend';
+import Friend from '../Friend'
 
-export default function List(props) {
+export default function List (props) {
   return (
     <div>
       {props.friends.map((friend, index) =>
@@ -17,5 +17,5 @@ export default function List(props) {
         />
       )}
     </div>
-  );
+  )
 }

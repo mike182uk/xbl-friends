@@ -1,68 +1,66 @@
-import difference from 'lodash/difference';
+/* global Notification */
 
-import {
-  NOTIFICATION_PREFERENCE_FAVOURITE_ONLY,
-  NOTIFICATION_PREFERENCE_FRIEND_ONLY,
-  NOTIFICATION_PREFERENCE_NON
-} from '../constants/settings';
+import difference from 'lodash/difference'
+
+import { NOTIFICATION_PREFERENCE_FAVOURITE_ONLY, NOTIFICATION_PREFERENCE_FRIEND_ONLY, NOTIFICATION_PREFERENCE_NON } from '../constants/settings'
 
 export default function (store) {
-  let friendsNotifiedFor = [];
+  let friendsNotifiedFor = []
 
   const notifyFriendsOnlineHandler = () => {
-    let state = store.getState();
-    let notificationsPreference = state.settings.notifications.preference;
+    let state = store.getState()
+    let notificationsPreference = state.settings.notifications.preference
 
     // not logged in
     if (!state.auth.authorized && !friendsNotifiedFor.length) {
-      return;
+      return
     }
 
     // logged out
     if (!state.auth.authorized) {
-      friendsNotifiedFor = [];
-      return;
+      friendsNotifiedFor = []
+      return
     }
 
     // notification disabled
-    if (notificationsPreference == NOTIFICATION_PREFERENCE_NON) {
-      friendsNotifiedFor = [];
-      return;
+    if (notificationsPreference === NOTIFICATION_PREFERENCE_NON) {
+      friendsNotifiedFor = []
+      return
     }
 
     const newFriendsToNotifyFor = getOnlineFriendsForNotificationsPreference(
       state.friends.friends,
       notificationsPreference
-    );
+    )
 
     // not first run and newFriendsToNotifyFor differ
     if (friendsNotifiedFor.length && friendsNotifiedFor !== newFriendsToNotifyFor) {
-      difference(newFriendsToNotifyFor, friendsNotifiedFor).forEach(friend => notify(friend));
+      difference(newFriendsToNotifyFor, friendsNotifiedFor).forEach(friend => notify(friend))
     }
 
-    friendsNotifiedFor = newFriendsToNotifyFor;
+    friendsNotifiedFor = newFriendsToNotifyFor
   }
 
-  return store.subscribe(notifyFriendsOnlineHandler);
+  return store.subscribe(notifyFriendsOnlineHandler)
 }
 
-function getOnlineFriendsForNotificationsPreference(friends, notificationsPreference) {
+function getOnlineFriendsForNotificationsPreference (friends, notificationsPreference) {
   return friends.filter(friend => {
     if (friend.online) {
-      if (notificationsPreference == NOTIFICATION_PREFERENCE_FAVOURITE_ONLY && friend.favourite) {
-        return friend;
+      if (notificationsPreference === NOTIFICATION_PREFERENCE_FAVOURITE_ONLY && friend.favourite) {
+        return friend
       }
 
-      if (notificationsPreference == NOTIFICATION_PREFERENCE_FRIEND_ONLY) {
-        return friend;
+      if (notificationsPreference === NOTIFICATION_PREFERENCE_FRIEND_ONLY) {
+        return friend
       }
     }
-  });
+  })
 }
 
-function notify(friend) {
-  return new Notification(`Friend Online`, {
+function notify (friend) {
+  return new Notification('Friend Online', {
     body: `${friend.gamertag} is online - ${friend.primaryInfo}`,
     icon: friend.gamerpic
-  });
+  })
 }

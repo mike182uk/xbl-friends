@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux'
 import { routeReducer as routing } from 'react-router-redux'
 
-import app from './app';
-import auth from './auth';
-import friends from './friends';
-import settings from './settings';
+import app from './app'
+import auth from './auth'
+import friends from './friends'
+import settings from './settings'
 
 export default combineReducers({
   settings,
@@ -12,4 +12,4 @@ export default combineReducers({
   app,
   auth,
   routing
-});
+})

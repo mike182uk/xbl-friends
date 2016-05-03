@@ -1,96 +1,90 @@
 import { routeActions } from 'react-router-redux'
 
-import { friendsRetrievalRequested } from './friends';
-import {
-  requestLogin as ipcRequestLogin,
-  requestLogout as ipcRequestLogout
-} from '../ipc';
+import { friendsRetrievalRequested } from './friends'
+import { requestLogin as ipcRequestLogin, requestLogout as ipcRequestLogout } from '../ipc'
 
-import {
-  AUTH as AUTH_ROUTE,
-  FRIENDS as FRIENDS_ROUTE
-} from '../constants/routes';
+import { AUTH as AUTH_ROUTE, FRIENDS as FRIENDS_ROUTE } from '../constants/routes'
 
-export const REQUEST_LOGIN = 'REQUEST_LOGIN';
-export const LOGGED_IN = 'LOGGED_IN';
-export const REQUEST_LOGOUT = 'REQUEST_LOGOUT';
-export const LOGGED_OUT = 'LOGGED_OUT';
-export const AUTHENTICATED = 'AUTHENTICATED';
-export const AUTHENTICATING = 'AUTHENTICATING';
-export const AUTH_CANCELLED = 'AUTH_CANCELLED';
+export const REQUEST_LOGIN = 'REQUEST_LOGIN'
+export const LOGGED_IN = 'LOGGED_IN'
+export const REQUEST_LOGOUT = 'REQUEST_LOGOUT'
+export const LOGGED_OUT = 'LOGGED_OUT'
+export const AUTHENTICATED = 'AUTHENTICATED'
+export const AUTHENTICATING = 'AUTHENTICATING'
+export const AUTH_CANCELLED = 'AUTH_CANCELLED'
 
-export function requestLogin() {
+export function requestLogin () {
   return {
     type: REQUEST_LOGIN
   }
 }
 
-export function loginRequested() {
+export function loginRequested () {
   return dispatch => {
-    dispatch(requestLogin());
+    dispatch(requestLogin())
 
-    return ipcRequestLogin();
+    return ipcRequestLogin()
   }
 }
 
-export function loggedIn() {
+export function loggedIn () {
   return {
     type: LOGGED_IN
   }
 }
 
-export function authenticated() {
+export function authenticated () {
   return {
     type: AUTHENTICATED
   }
 }
 
-export function requestLogout() {
+export function requestLogout () {
   return {
     type: REQUEST_LOGOUT
   }
 }
 
-export function logoutRequested() {
+export function logoutRequested () {
   return dispatch => {
-    dispatch(requestLogout());
+    dispatch(requestLogout())
 
-    return ipcRequestLogout();
+    return ipcRequestLogout()
   }
 }
 
-export function loggedOut() {
+export function loggedOut () {
   return {
     type: LOGGED_OUT
   }
 }
 
-export function authenticating() {
+export function authenticating () {
   return {
     type: AUTHENTICATING
   }
 }
 
-export function loginSuccessful() {
+export function loginSuccessful () {
   return dispatch => {
     [
       loggedIn(),
       friendsRetrievalRequested(),
       routeActions.push(FRIENDS_ROUTE)
-    ].map(dispatch);
+    ].map(dispatch)
   }
 }
 
-export function logoutSuccessful() {
+export function logoutSuccessful () {
   return dispatch => {
     [
       loggedOut(),
       routeActions.push(AUTH_ROUTE)
-    ].map(dispatch);
+    ].map(dispatch)
   }
 }
 
-export function authCancelled() {
+export function authCancelled () {
   return {
     type: AUTH_CANCELLED
   }

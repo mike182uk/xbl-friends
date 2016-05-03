@@ -1,5 +1,5 @@
-import { remote } from 'electron';
+import { remote } from 'electron'
 
-const ENV = remote.process.env.NODE_ENV;
+const ENV = remote.process.env.NODE_ENV
 
-export default ENV;
+export default ENV

@@ -1,11 +1,4 @@
-import {
-  REQUEST_LOGIN,
-  LOGGED_IN,
-  AUTHENTICATED,
-  REQUEST_LOGOUT,
-  LOGGED_OUT,
-  AUTH_CANCELLED
-} from '../actions/auth';
+import { REQUEST_LOGIN, LOGGED_IN, AUTHENTICATED, REQUEST_LOGOUT, LOGGED_OUT, AUTH_CANCELLED } from '../actions/auth'
 
 const initialState = {
   authorized: false,
@@ -20,22 +13,22 @@ export default function (state = initialState, action) {
         actionInProgress: false,
         authorized: true,
         authCodeRequired: false
-      });
+      })
 
     case REQUEST_LOGIN:
     case REQUEST_LOGOUT:
       return Object.assign({}, state, {
         actionInProgress: true
-      });
+      })
 
     case LOGGED_OUT:
     case AUTH_CANCELLED:
       return Object.assign({}, state, {
         actionInProgress: false,
         authorized: false
-      });
+      })
 
     default:
-      return state;
+      return state
   }
 }

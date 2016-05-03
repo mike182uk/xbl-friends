@@ -1,61 +1,61 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { remote } from 'electron';
-import ENV from '../../utils/env';
+import React from 'react'
+import { connect } from 'react-redux'
 
-import DevTools from '../../containers/DevTools';
-import AppError from '../../components/AppError';
-import AppMainNav from '../../components/AppMainNav';
+import ENV from '../../utils/env'
+
+import DevTools from '../../containers/DevTools'
+import AppError from '../../components/AppError'
+import AppMainNav from '../../components/AppMainNav'
 
 import {
-  AUTH as AUTH_ROUTE,
-} from '../../constants/routes';
+  AUTH as AUTH_ROUTE
+} from '../../constants/routes'
 
 const App = class extends React.Component {
-  getError() {
+  getError () {
     if (this.props.error && this.props.showMainError) {
       return (
         <AppError message={this.props.error} />
-      );
+      )
     }
   }
 
-  getNav() {
-    if (this.props.authorized || ENV == 'dev') {
+  getNav () {
+    if (this.props.authorized || ENV === 'dev') {
       return (
         <AppMainNav />
       )
     }
   }
 
-  getDevTools() {
-    if (ENV == 'dev') {
+  getDevTools () {
+    if (ENV === 'dev') {
       return (
         <DevTools />
-      );
+      )
     }
   }
 
-  render() {
+  render () {
     return (
-      <div className="container-fluid" style={{ minHeight: window.innerHeight }}>
+      <div className='container-fluid' style={{ minHeight: window.innerHeight }}>
         {this.getNav()}
         {this.getError()}
         {this.props.children}
         {this.getDevTools()}
       </div>
-    );
+    )
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return {
     error: state.app.error,
     authorized: state.auth.authorized,
     // do not show the main error when on the auth route as the error is
     // shown inside of the auth container as it is centered on the page
-    showMainError: state.routing.location.pathname.indexOf(AUTH_ROUTE) == -1
+    showMainError: state.routing.location.pathname.indexOf(AUTH_ROUTE) === -1
   }
 }
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps)(App)

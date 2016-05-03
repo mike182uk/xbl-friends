@@ -26,4 +26,4 @@ module.exports = {
 
   // URLs
   URL_FRIENDS: 'https://account.xbox.com/en-US/Friends'
-};
+}

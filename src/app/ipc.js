@@ -1,14 +1,13 @@
-import { ipcRenderer } from 'electron';
+import { ipcRenderer } from 'electron'
 
 import {
   loginSuccessful,
   logoutSuccessful,
-  authenticated,
   authenticating,
   authCancelled
-} from './actions/auth';
-import { friendsRetrievalSuccessful } from './actions/friends';
-import { appLoadSuccessful } from './actions/app';
+} from './actions/auth'
+import { friendsRetrievalSuccessful } from './actions/friends'
+import { appLoadSuccessful } from './actions/app'
 
 import {
   IPC_CHANNEL_MAIN,
@@ -22,51 +21,51 @@ import {
   XBL_WINDOW_EVENT_AUTH_CANCELLED,
   XBL_WINDOW_ACTION_LOGIN,
   XBL_WINDOW_ACTION_LOGOUT,
-  XBL_WINDOW_ACTION_RETRIEVE_FRIENDS,
-} from '../common/constants';
+  XBL_WINDOW_ACTION_RETRIEVE_FRIENDS
+} from '../common/constants'
 
-export function init(dispatch) {
+export function init (dispatch) {
   ipcRenderer.on(IPC_CHANNEL_MAIN, (event, message) => {
-    if (message.type == IPC_MESSAGE_TYPE_XBL_WINDOW_EVENT) {
+    if (message.type === IPC_MESSAGE_TYPE_XBL_WINDOW_EVENT) {
       switch (message.event) {
         case XBL_WINDOW_EVENT_LOGGED_IN:
-          return dispatch(loginSuccessful());
+          return dispatch(loginSuccessful())
         case XBL_WINDOW_EVENT_LOGGED_OUT:
-          return dispatch(logoutSuccessful());
+          return dispatch(logoutSuccessful())
         case XBL_WINDOW_EVENT_FRIENDS_RETRIEVED:
-          return dispatch(friendsRetrievalSuccessful(message.data.friends));
+          return dispatch(friendsRetrievalSuccessful(message.data.friends))
         case XBL_WINDOW_EVENT_WINDOW_DISPLAYED:
-          return dispatch(authenticating());
+          return dispatch(authenticating())
         case XBL_WINDOW_EVENT_INITIAL_LOAD_COMPLETE:
-          return dispatch(appLoadSuccessful(message.data.authenticated));
+          return dispatch(appLoadSuccessful(message.data.authenticated))
         case XBL_WINDOW_EVENT_AUTH_CANCELLED:
-          return dispatch(authCancelled());
+          return dispatch(authCancelled())
       }
     }
-  });
+  })
 }
 
-export function requestLogin() {
+export function requestLogin () {
   sendIpcMessageToMain({
     type: IPC_MESSAGE_TYPE_XBL_WINDOW_ACTION,
     action: XBL_WINDOW_ACTION_LOGIN
-  });
+  })
 }
 
-export function requestLogout() {
+export function requestLogout () {
   sendIpcMessageToMain({
     type: IPC_MESSAGE_TYPE_XBL_WINDOW_ACTION,
     action: XBL_WINDOW_ACTION_LOGOUT
-  });
+  })
 }
 
-export function requestFriendsRetrieval() {
+export function requestFriendsRetrieval () {
   sendIpcMessageToMain({
     type: IPC_MESSAGE_TYPE_XBL_WINDOW_ACTION,
     action: XBL_WINDOW_ACTION_RETRIEVE_FRIENDS
-  });
+  })
 }
 
-function sendIpcMessageToMain(message) {
-  ipcRenderer.send(IPC_CHANNEL_MAIN, message);
+function sendIpcMessageToMain (message) {
+  ipcRenderer.send(IPC_CHANNEL_MAIN, message)
 }

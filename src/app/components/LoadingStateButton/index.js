@@ -1,21 +1,21 @@
-import React from 'react';
+import React from 'react'
 
-import { Button, Glyphicon } from 'react-bootstrap';
+import { Button, Glyphicon } from 'react-bootstrap'
 
-import styles from './styles.css';
+import styles from './styles.css'
 
 const customProps = [
   'loadingText',
   'isLoading'
-];
+]
 
 const LoadingStateButton = (props) => {
   return (
     <Button {...getButtonProps(props)}>
       {
-        props.isLoading ?
-          <span><Glyphicon glyph="refresh" bsClass={`glyphicon ${styles.glyphiconRefreshAnimate}`} /> {props.loadingText}</span> :
-          props.children
+        props.isLoading
+          ? <span><Glyphicon glyph='refresh' bsClass={`glyphicon ${styles.glyphiconRefreshAnimate}`} /> {props.loadingText}</span>
+          : props.children
       }
     </Button>
   )
@@ -27,14 +27,14 @@ LoadingStateButton.propTypes = {
   children: React.PropTypes.string.isRequired
 }
 
-function getButtonProps(props) {
-  let buttonProps = Object.assign({}, props);
+function getButtonProps (props) {
+  let buttonProps = Object.assign({}, props)
 
-  customProps.forEach(prop => delete buttonProps[prop]);
+  customProps.forEach(prop => delete buttonProps[prop])
 
-  buttonProps['disabled'] = props.isLoading;
+  buttonProps['disabled'] = props.isLoading
 
-  return buttonProps;
+  return buttonProps
 }
 
-export default LoadingStateButton;
+export default LoadingStateButton

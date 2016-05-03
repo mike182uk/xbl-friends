@@ -1,11 +1,11 @@
-import React from 'react';
+import React from 'react'
 
-import { Alert } from 'react-bootstrap';
+import { Alert } from 'react-bootstrap'
 
-export default function AppError(props) {
+export default function AppError (props) {
   return (
     <div>
-      <Alert bsStyle="danger">{props.message}</Alert>
+      <Alert bsStyle='danger'>{props.message}</Alert>
     </div>
-  );
+  )
 }

@@ -1,7 +1,7 @@
-import React from 'react';
+import React from 'react'
 
-import { Input } from 'react-bootstrap';
-import LoadingStateButton from '../LoadingStateButton';
+import { Input } from 'react-bootstrap'
+import LoadingStateButton from '../LoadingStateButton'
 
 import {
   NOTIFICATION_PREFERENCE_FRIEND_ONLY,
@@ -14,10 +14,10 @@ import {
   BG_UPDATE_INTERVAL_15,
   BG_UPDATE_INTERVAL_30,
   BG_UPDATE_INTERVAL_60
-} from '../../constants/settings';
+} from '../../constants/settings'
 
 export default class SettingsForm extends React.Component {
-  getNotificationPreferenceOptions() {
+  getNotificationPreferenceOptions () {
     return {
       [NOTIFICATION_PREFERENCE_FRIEND_ONLY]: 'Show a notification when a friend comes online',
       [NOTIFICATION_PREFERENCE_FAVOURITE_ONLY]: 'Show a notification when a favourite friend comes online',
@@ -25,7 +25,7 @@ export default class SettingsForm extends React.Component {
     }
   }
 
-  getBgUpdateIntervalOptions() {
+  getBgUpdateIntervalOptions () {
     return {
       [BG_UPDATE_INTERVAL_5]: 'Every 5 Minutes',
       [BG_UPDATE_INTERVAL_10]: 'Every 10 Minutes',
@@ -35,7 +35,7 @@ export default class SettingsForm extends React.Component {
     }
   }
 
-  render() {
+  render () {
     const {
       settings,
       onChangeNotificationPreference,
@@ -43,40 +43,40 @@ export default class SettingsForm extends React.Component {
       onChangeBgUpdateInterval,
       onSignOut,
       signingOut
-    } = this.props;
+    } = this.props
 
-    const notificationPreferencesOptions = this.getNotificationPreferenceOptions();
-    const updateIntervalOptions = this.getBgUpdateIntervalOptions();
+    const notificationPreferencesOptions = this.getNotificationPreferenceOptions()
+    const updateIntervalOptions = this.getBgUpdateIntervalOptions()
 
     return (
       <form>
         <Input
-          type="select"
-          id="settings_notification_preference"
+          type='select'
+          id='settings_notification_preference'
           onChange={e => onChangeNotificationPreference(e.target.value)}
           value={settings.notifications.preference}
-          label="Notification Preference"
+          label='Notification Preference'
         >
           {Object.keys(notificationPreferencesOptions).map((key, index) =>
             <option key={index} value={key}>{notificationPreferencesOptions[key]}</option>
           )}
         </Input>
         <Input
-          type="select"
-          id="settings_friends_bg_update_status"
+          type='select'
+          id='settings_friends_bg_update_status'
           onChange={e => onChangeBgUpdateStatus(e.target.value)}
           value={Number(settings.friends.bgUpdate)}
-          label="Friends Background Update"
+          label='Friends Background Update'
         >
           <option value={Number(BG_UPDATE_ENABLED)}>Enabled</option>
           <option value={Number(BG_UPDATE_DISABLED)}>Disabled</option>
         </Input>
         <Input
-          type="select"
-          id="settings_friends_bg_update_interval"
+          type='select'
+          id='settings_friends_bg_update_interval'
           onChange={e => onChangeBgUpdateInterval(e.target.value)}
           value={settings.friends.bgUpdateInterval}
-          label="Friends Background Update Interval"
+          label='Friends Background Update Interval'
           disabled={!settings.friends.bgUpdate}
         >
           {Object.keys(updateIntervalOptions).map((key, index) =>
@@ -86,11 +86,11 @@ export default class SettingsForm extends React.Component {
         <LoadingStateButton
           onClick={() => onSignOut()}
           isLoading={signingOut}
-          loadingText="Signing Out Of Xbox Live..."
-          bsStyle="danger"
+          loadingText='Signing Out Of Xbox Live...'
+          bsStyle='danger'
           block
         >Sign Out Of Xbox Live</LoadingStateButton>
       </form>
-    );
+    )
   }
 }

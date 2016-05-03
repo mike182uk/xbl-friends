@@ -1,19 +1,19 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React from 'react'
+import { connect } from 'react-redux'
 
-import SettingsForm from '../../components/SettingsForm';
+import SettingsForm from '../../components/SettingsForm'
 
 import {
   setNotificationPreference,
   setBgUpdateStatus,
   setBgUpdateInterval
-} from '../../actions/settings';
+} from '../../actions/settings'
 
-import { logoutRequested } from '../../actions/auth';
+import { logoutRequested } from '../../actions/auth'
 
 const Settings = class extends React.Component {
-  render() {
-    const { dispatch, settings, actionInProgress } = this.props;
+  render () {
+    const { dispatch, settings, actionInProgress } = this.props
 
     return (
       <div>
@@ -32,15 +32,15 @@ const Settings = class extends React.Component {
           signingOut={actionInProgress}
         />
       </div>
-    );
+    )
   }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps (state) {
   return {
     settings: state.settings,
     actionInProgress: state.auth.actionInProgress
-  };
+  }
 }
 
-export default connect(mapStateToProps)(Settings);
+export default connect(mapStateToProps)(Settings)
