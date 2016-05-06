@@ -1,6 +1,6 @@
 /* global Notification */
 
-import difference from 'lodash/difference'
+import _ from 'lodash'
 
 import { NOTIFICATION_PREFERENCE_FAVOURITE_ONLY, NOTIFICATION_PREFERENCE_FRIEND_ONLY, NOTIFICATION_PREFERENCE_NON } from '../constants/settings'
 
@@ -34,11 +34,16 @@ export default function (store) {
     )
 
     // not first run and newFriendsToNotifyFor differ
-    if (friendsNotifiedFor.length && friendsNotifiedFor !== newFriendsToNotifyFor) {
-      difference(newFriendsToNotifyFor, friendsNotifiedFor).forEach(friend => notify(friend))
+    let newFriendsMap = newFriendsToNotifyFor.map(friend => friend.gamertag)
+
+    if (friendsNotifiedFor.length && !_.isEqual(newFriendsMap, friendsNotifiedFor)) {
+      _.difference(newFriendsMap, friendsNotifiedFor).forEach(friend =>
+        notify(
+          _.find(newFriendsToNotifyFor, { gamertag: friend })
+        ))
     }
 
-    friendsNotifiedFor = newFriendsToNotifyFor
+    friendsNotifiedFor = newFriendsMap
   }
 
   return store.subscribe(notifyFriendsOnlineHandler)
