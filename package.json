@@ -67,7 +67,6 @@
     "redux": "^3.0.5",
     "redux-storage": "^3.0.0",
     "redux-storage-decorator-filter": "^1.0.0",
-    "redux-storage-engine-localstorage": "^1.0.0",
-    "validator": "^5.2.0"
+    "redux-storage-engine-localstorage": "^1.0.0"
   }
 }
