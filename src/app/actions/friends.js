@@ -24,7 +24,7 @@ export function friendsRetrievalRequested (bg = false) {
   }
 }
 
-export function friendsRetrievalSuccessful (friends) {
+export function friendsRetrieved (friends) {
   return {
     type: FRIENDS_RETRIEVED,
     friends

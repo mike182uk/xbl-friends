@@ -1,7 +1,5 @@
 'use strict'
 
-const showXBL = process.env.SHOW_XBL === 'true'
-
 const electron = require('electron')
 const path = require('path')
 
@@ -15,6 +13,7 @@ module.exports = (appWindow, xblWindow) => {
 
   // listen for action requests on the main channel
   ipcMain.on(constants.IPC_CHANNEL_MAIN, (event, message) => {
+    // listen for XBL window actions
     if (message.type === constants.IPC_MESSAGE_TYPE_XBL_WINDOW_ACTION) {
       switch (message.action) {
         // show the app window when login is requested. This will allow the user
@@ -27,10 +26,13 @@ module.exports = (appWindow, xblWindow) => {
           // clear XBL window session storage which will delete all cookies etc.
           // assiociated with the XBL website. Once cleared, reload the friends
           // URL which should redirect back to the login URL and send a message
-          // to the app window
+          // to the app window. Set xblWindow.authenticated to be false so the
+          // user can re-authenticate without restarting the app
           xblWindowWebContents
             .session
             .clearStorageData(() => {
+              xblWindow.authenticated = false
+
               xblWindowWebContents.loadURL(constants.URL_FRIENDS)
 
               appWindowWebContents.send(constants.IPC_CHANNEL_MAIN, {
@@ -54,14 +56,41 @@ module.exports = (appWindow, xblWindow) => {
           break
       }
     }
+
+    // listen for app window actions
+    if (message.type === constants.IPC_MESSAGE_TYPE_APP_WINDOW_ACTION) {
+      switch (message.event) {
+        // load / reload the friends page and send a message to the app window
+        // informing it the XBL window has loaded and also send along the
+        // authentication status
+        case constants.APP_WINDOW_EVENT_INITIALISING:
+          xblWindowWebContents.once('did-finish-load', () => {
+            let authenticated = xblWindowWebContents.getURL() === constants.URL_FRIENDS
+
+            xblWindow.authenticated = authenticated
+
+            appWindowWebContents.send(constants.IPC_CHANNEL_MAIN, {
+              type: constants.IPC_MESSAGE_TYPE_XBL_WINDOW_EVENT,
+              event: constants.XBL_WINDOW_EVENT_INITIALISED,
+              data: {
+                authenticated: authenticated
+              }
+            })
+          })
+
+          xblWindowWebContents.loadURL(constants.URL_FRIENDS)
+          break
+      }
+    }
   })
 
   // listen for events on the XBL window channel
   ipcMain.on(constants.IPC_CHANNEL_XBL_WINDOW, (event, message) => {
     if (message.type === constants.IPC_MESSAGE_TYPE_XBL_WINDOW_EVENT) {
       switch (message.event) {
+        // when friends have been retrieved from XBL window, forward on message
+        // to app window
         case constants.XBL_WINDOW_EVENT_FRIENDS_RETRIEVED:
-          // forward on message to app window
           appWindowWebContents.send(constants.IPC_CHANNEL_MAIN, {
             type: constants.IPC_MESSAGE_TYPE_XBL_WINDOW_EVENT,
             event: constants.XBL_WINDOW_EVENT_FRIENDS_RETRIEVED,
@@ -69,32 +98,6 @@ module.exports = (appWindow, xblWindow) => {
           })
           break
       }
-    }
-  })
-
-  // Watch navigation changes to work out when to hide the window. The window should
-  // be hidden if it is visible and it has just navigated to the friends page as this
-  // means the user is now logged in.
-  xblWindowWebContents.on('did-navigate', () => {
-    let loggedInEventSent = false
-    let condition = () => (showXBL) ? loggedInEventSent : xblWindow.isVisible()
-
-    if (xblWindowWebContents.getURL() === constants.URL_FRIENDS && condition()) {
-      if (!showXBL) {
-        xblWindow.hide()
-      } else {
-        loggedInEventSent = true
-      }
-
-      appWindow.show()
-
-      // wait for this page to finish loading before we trigger any other page loads
-      xblWindowWebContents.once('did-finish-load', () => {
-        appWindowWebContents.send(constants.IPC_CHANNEL_MAIN, {
-          type: constants.IPC_MESSAGE_TYPE_XBL_WINDOW_EVENT,
-          event: constants.XBL_WINDOW_EVENT_LOGGED_IN
-        })
-      })
     }
   })
 }

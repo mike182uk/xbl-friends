@@ -5,7 +5,7 @@ import { Glyphicon } from 'react-bootstrap'
 
 import styles from './style.css'
 
-const AppLoading = class extends React.Component {
+const AppInitialising = class extends React.Component {
   componentDidMount () {
     const updateLoadingText = () => {
       var loadingText = this.refs.loadingText
@@ -42,4 +42,4 @@ function mapStateToProps (state) {
   return {}
 }
 
-export default connect(mapStateToProps)(AppLoading)
+export default connect(mapStateToProps)(AppInitialising)

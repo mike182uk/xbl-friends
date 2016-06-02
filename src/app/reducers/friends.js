@@ -1,5 +1,4 @@
 import { REQUEST_FRIENDS_RETRIEVAL, BG_REQUEST_FRIENDS_RETRIEVAL, FRIENDS_RETRIEVED, FRIENDS_UPDATE_FAILED } from '../actions/friends'
-
 import { LOGGED_OUT } from '../actions/auth'
 
 const initialState = {

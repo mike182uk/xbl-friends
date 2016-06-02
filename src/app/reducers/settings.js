@@ -1,7 +1,6 @@
 import deepAssign from 'deep-assign'
 
 import { SET_NOTIFICATION_PREFERENCE, SET_BG_UPDATE_STATUS, SET_BG_UPDATE_INTERVAL } from '../actions/settings'
-
 import { NOTIFICATION_PREFERENCE_FRIEND_ONLY } from '../constants/settings'
 
 const initialState = {

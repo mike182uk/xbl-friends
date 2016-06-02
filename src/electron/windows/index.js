@@ -5,12 +5,9 @@ const _ = require('lodash')
 const constants = require('../../common/constants')
 
 module.exports = () => {
-  let appWindow = require('./app')()
-  let xblWindow = require('./xbl')(appWindow)
-
   let windows = {
-    [constants.WINDOW_ID_APP]: appWindow,
-    [constants.WINDOW_ID_XBL]: xblWindow
+    [constants.WINDOW_ID_APP]: require('./app')(),
+    [constants.WINDOW_ID_XBL]: require('./xbl')()
   }
 
   // dereference window when closed

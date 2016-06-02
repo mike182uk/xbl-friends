@@ -1,14 +1,12 @@
-import { APP_LOADING, APP_LOADED } from '../actions/app'
-
-import { LOGOUT_FAILED } from '../actions/auth'
-
-import { FRIENDS_RETRIEVED, FRIENDS_UPDATE_FAILED } from '../actions/friends'
-
 import { UPDATE_LOCATION } from 'react-router-redux'
+
+import { APP_INITIALISING, APP_INITIALISED } from '../actions/app'
+import { LOGOUT_FAILED } from '../actions/auth'
+import { FRIENDS_RETRIEVED, FRIENDS_UPDATE_FAILED } from '../actions/friends'
 
 const initialState = {
   error: null,
-  loaded: false
+  initialised: false
 }
 
 export default function (state = initialState, action) {
@@ -25,14 +23,14 @@ export default function (state = initialState, action) {
         error: null
       })
 
-    case APP_LOADING:
+    case APP_INITIALISING:
       return Object.assign({}, state, {
-        loaded: false
+        initialised: false
       })
 
-    case APP_LOADED:
+    case APP_INITIALISED:
       return Object.assign({}, state, {
-        loaded: true
+        initialised: true
       })
 
     default:

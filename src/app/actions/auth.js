@@ -2,7 +2,6 @@ import { routeActions } from 'react-router-redux'
 
 import { friendsRetrievalRequested } from './friends'
 import { requestLogin as ipcRequestLogin, requestLogout as ipcRequestLogout } from '../ipc'
-
 import { AUTH as AUTH_ROUTE, FRIENDS as FRIENDS_ROUTE } from '../constants/routes'
 
 export const REQUEST_LOGIN = 'REQUEST_LOGIN'
@@ -10,7 +9,6 @@ export const LOGGED_IN = 'LOGGED_IN'
 export const REQUEST_LOGOUT = 'REQUEST_LOGOUT'
 export const LOGGED_OUT = 'LOGGED_OUT'
 export const AUTHENTICATED = 'AUTHENTICATED'
-export const AUTHENTICATING = 'AUTHENTICATING'
 export const AUTH_CANCELLED = 'AUTH_CANCELLED'
 
 export function requestLogin () {
@@ -56,12 +54,6 @@ export function logoutRequested () {
 export function loggedOut () {
   return {
     type: LOGGED_OUT
-  }
-}
-
-export function authenticating () {
-  return {
-    type: AUTHENTICATING
   }
 }
 

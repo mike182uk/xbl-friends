@@ -1,10 +1,10 @@
-import { APP_LOADING as APP_LOADING_ROUTE } from '../constants/routes'
+import { APP_LOADING as APP_INITIALISING_ROUTE } from '../constants/routes'
 
-export function requireAppLoaded (store) {
+export function requireAppInitialised (store) {
   return (nextState, replace) => {
-    if (!store.getState().app.loaded) {
+    if (!store.getState().app.initialised) {
       replace({
-        pathname: APP_LOADING_ROUTE,
+        pathname: APP_INITIALISING_ROUTE,
         state: { nextPathname: nextState.location.pathname }
       })
     }
