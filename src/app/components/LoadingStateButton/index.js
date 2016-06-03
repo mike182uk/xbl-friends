@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Button, Glyphicon } from 'react-bootstrap'
 
-import styles from './styles.css'
+import styles from '../../common.css'
 
 const customProps = [
   'loadingText',

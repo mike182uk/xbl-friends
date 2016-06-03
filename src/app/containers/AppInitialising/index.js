@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Glyphicon } from 'react-bootstrap'
 
 import styles from './style.css'
+import commonStyles from '../../common.css'
 
 const AppInitialising = class extends React.Component {
   componentDidMount () {
@@ -29,7 +30,7 @@ const AppInitialising = class extends React.Component {
     return (
       <div className={styles.boot} style={{ minHeight: window.innerHeight }}>
         <p className={`lead ${styles.loading}`}>
-          <Glyphicon glyph='refresh' bsClass={`glyphicon ${styles.glyphiconRefreshAnimate}`} />
+          <Glyphicon glyph='refresh' bsClass={`glyphicon ${commonStyles.glyphiconRefreshAnimate}`} />
           <br /><span ref='loadingText'>Loading</span>
           <br /><small>Please wait</small>
         </p>
