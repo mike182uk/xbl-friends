@@ -6,4 +6,8 @@ BABEL_ENV=prod webpack --config ./webpack.app.config.js
 
 cp -r ./{src/electron,src/common,package.json} ./build/
 
+# bundle modules used by the electron process
+mkdir ./build/node_modules
+cp -r ./node_modules/lodash ./build/node_modules/lodash
+
 echo "require('./electron/main.js');" > ./build/index.js
