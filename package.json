@@ -1,5 +1,8 @@
 {
   "name": "xbl-friends",
+  "version": "1.0.0",
+  "description": "A menu bar application to see when your Xbox live friends are online",
+  "private": true,
   "scripts": {
     "info": "npm-scripts-info",
     "dev:server": "scripty",
@@ -19,6 +22,16 @@
     "built-app": "Start the built application",
     "package": "Package the built application",
     "lint": "Run linter on codebase"
+  },
+  "author": "Michael David Barrett <mike182uk@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/mike182uk/xbl-friends.git"
+  },
+  "homepage": "https://github.com/mike182uk/xbl-friends",
+  "bugs": {
+    "url": "https://github.com/mike182uk/xbl-friends/issues"
   },
   "devDependencies": {
     "babel-cli": "^6.5.1",
@@ -73,5 +86,10 @@
     "globals": [
       "__DEV__"
     ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
