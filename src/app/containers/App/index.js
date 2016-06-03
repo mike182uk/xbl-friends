@@ -1,8 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import ENV from '../../utils/env'
-
 import DevTools from '../../containers/DevTools'
 import AppError from '../../components/AppError'
 import AppMainNav from '../../components/AppMainNav'
@@ -21,7 +19,7 @@ const App = class extends React.Component {
   }
 
   getNav () {
-    if (this.props.authorized || ENV === 'dev') {
+    if (this.props.authorized || __DEV__) {
       return (
         <AppMainNav />
       )
@@ -29,7 +27,7 @@ const App = class extends React.Component {
   }
 
   getDevTools () {
-    if (ENV === 'dev') {
+    if (__DEV__) {
       return (
         <DevTools />
       )

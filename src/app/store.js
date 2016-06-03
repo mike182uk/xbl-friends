@@ -5,7 +5,6 @@ import { syncHistory } from 'react-router-redux'
 import * as storage from 'redux-storage'
 import createEngine from 'redux-storage-engine-localstorage'
 import filter from 'redux-storage-decorator-filter'
-import ENV from './utils/env'
 
 import reducers from './reducers'
 import bgUpdateFriendsSubscriber from './subscribers/bg-update-friends'
@@ -42,7 +41,7 @@ const storeEnhancers = [
   applyMiddleware(thunkMiddleware, reduxRouterMiddleware, storageMiddleware)
 ]
 
-if (ENV === 'dev') {
+if (__DEV__) {
   storeEnhancers.push(DevTools.instrument())
 }
 

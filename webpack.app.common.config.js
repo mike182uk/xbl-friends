@@ -1,5 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path')
+const webpack = require('webpack')
 
 const config = {
   entry: path.resolve(__dirname, 'src/app/index.js'),
@@ -53,6 +54,9 @@ const config = {
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, 'src/app/index.html')
+    }),
+    new webpack.DefinePlugin({
+      __DEV__: process.env.NODE_ENV === 'dev'
     })
   ],
   postcss: [
