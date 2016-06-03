@@ -1,5 +1,4 @@
 import React from 'react'
-import { connect } from 'react-redux'
 
 import { Glyphicon } from 'react-bootstrap'
 
@@ -28,7 +27,7 @@ const AppInitialising = class extends React.Component {
 
   render () {
     return (
-      <div className={styles.boot} style={{ minHeight: window.innerHeight }}>
+      <div className={styles.initialising} style={{ minHeight: window.innerHeight }}>
         <p className={`lead ${styles.loading}`}>
           <Glyphicon glyph='refresh' bsClass={`glyphicon ${commonStyles.glyphiconRefreshAnimate}`} />
           <br /><span ref='loadingText'>Loading</span>
@@ -39,8 +38,4 @@ const AppInitialising = class extends React.Component {
   }
 }
 
-function mapStateToProps (state) {
-  return {}
-}
-
-export default connect(mapStateToProps)(AppInitialising)
+export default AppInitialising
