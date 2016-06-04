@@ -4,7 +4,9 @@ rm -rf ./build/*
 
 BABEL_ENV=prod webpack --config ./webpack.app.config.js
 
-cp -r ./{src/electron,src/common,package.json} ./build/
+cp -r ./src/electron ./build/
+cp -r ./src/common ./build/
+cp -r ./package.json ./build/
 
 # bundle modules used by the electron process
 mkdir ./build/node_modules
