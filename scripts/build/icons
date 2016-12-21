@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+svg2png --width=1000 --height=1000 src/electron/icon.svg src/electron/icon.png
+svg2png --width=16 --height=16 src/electron/iconTemplate.svg src/electron/iconTemplate.png
+svg2png --width=32 --height=32 src/electron/iconTemplate.svg src/electron/iconTemplate@2x.png
+
+makeicns -in src/electron/icon.png -out src/electron/xbl-friends.icns
+
+rm src/electron/icon.png
