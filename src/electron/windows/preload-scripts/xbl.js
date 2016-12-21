@@ -6,7 +6,7 @@ delete window.require
 
 const _ = nodeRequire('lodash')
 const ipcRenderer = nodeRequire('electron').ipcRenderer
-const constants = nodeRequire('../../../common/constants')
+const constants = nodeRequire('../../../constants')
 
 const retrieveFriends = () => {
   let data = []

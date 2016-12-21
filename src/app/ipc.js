@@ -17,7 +17,7 @@ import {
   XBL_WINDOW_ACTION_LOGIN,
   XBL_WINDOW_ACTION_LOGOUT,
   XBL_WINDOW_ACTION_RETRIEVE_FRIENDS
-} from '../common/constants'
+} from '../constants'
 
 export function initialise (dispatch) {
   ipcRenderer.on(IPC_CHANNEL_MAIN, (event, message) => {

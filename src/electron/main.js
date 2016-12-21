@@ -7,7 +7,7 @@ const _ = require('lodash')
 const electron = require('electron')
 const path = require('path')
 
-const constants = require(path.resolve(__dirname, '../common/constants'))
+const constants = require(path.resolve(__dirname, '../constants'))
 const initialiseWindows = require('./windows')
 const initialiseIpc = require('./ipc')
 

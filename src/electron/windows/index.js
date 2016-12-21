@@ -2,7 +2,7 @@
 
 const _ = require('lodash')
 
-const constants = require('../../common/constants')
+const constants = require('../../constants')
 
 module.exports = () => {
   let windows = {
