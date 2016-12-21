@@ -11,8 +11,7 @@
     "build": "scripty",
     "built-app": "scripty",
     "package": "scripty",
-    "lint": "standard 'src/**/*.js*' './webpack*.js'",
-    "ci:release": "scripty"
+    "lint": "standard 'src/**/*.js*' './webpack*.js'"
   },
   "scripts-info": {
     "info": "Display scripts info",
@@ -22,8 +21,7 @@
     "build": "Build the application",
     "built-app": "Start the built application",
     "package": "Package the built application",
-    "lint": "Run linter on codebase",
-    "ci:release": "Release built and packaged application via the CI (must be run on the CI)"
+    "lint": "Run linter on codebase"
   },
   "author": "Michael David Barrett <mike182uk@gmail.com>",
   "license": "MIT",

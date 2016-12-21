@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Glyphicon } from 'react-bootstrap'
 
-import styles from './style.css'
+import styles from './styles.css'
 import commonStyles from '../../common.css'
 
 const AppInitialising = class extends React.Component {

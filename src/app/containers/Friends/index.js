@@ -5,7 +5,7 @@ import { friendsRetrievalRequested } from '../../actions/friends'
 import FriendsGroup from '../../components/FriendsGroup'
 import UpdateFriends from '../../components/UpdateFriends'
 
-import styles from './style.css'
+import styles from './styles.css'
 
 const Friends = class extends React.Component {
   getGroups (favouriteFriends, onlineFriends, offlineFriends) {

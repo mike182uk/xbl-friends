@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Image } from 'react-bootstrap'
 
-import styles from './style.css'
+import styles from './styles.css'
 
 export default function Friend (props) {
   const classNames = [

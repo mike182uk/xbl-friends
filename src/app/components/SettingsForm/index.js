@@ -52,17 +52,6 @@ export default class SettingsForm extends React.Component {
       <form>
         <Input
           type='select'
-          id='settings_notification_preference'
-          onChange={e => onChangeNotificationPreference(e.target.value)}
-          value={settings.notifications.preference}
-          label='Notification Preference'
-        >
-          {Object.keys(notificationPreferencesOptions).map((key, index) =>
-            <option key={index} value={key}>{notificationPreferencesOptions[key]}</option>
-          )}
-        </Input>
-        <Input
-          type='select'
           id='settings_friends_bg_update_status'
           onChange={e => onChangeBgUpdateStatus(e.target.value)}
           value={Number(settings.friends.bgUpdate)}
@@ -70,6 +59,18 @@ export default class SettingsForm extends React.Component {
         >
           <option value={Number(BG_UPDATE_ENABLED)}>Enabled</option>
           <option value={Number(BG_UPDATE_DISABLED)}>Disabled</option>
+        </Input>
+        <Input
+          type='select'
+          id='settings_notification_preference'
+          onChange={e => onChangeNotificationPreference(e.target.value)}
+          value={settings.notifications.preference}
+          label='Notification Preference'
+          disabled={!settings.friends.bgUpdate}
+        >
+          {Object.keys(notificationPreferencesOptions).map((key, index) =>
+            <option key={index} value={key}>{notificationPreferencesOptions[key]}</option>
+          )}
         </Input>
         <Input
           type='select'

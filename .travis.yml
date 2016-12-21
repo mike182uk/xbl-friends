@@ -1,22 +1,28 @@
 language: node_js
 
 node_js:
-  - stable
+  - v7
 
 sudo: false
 
 cache:
+  yarn: true
   directories:
     - node_modules
-
-env:
-  global:
-    - secure: bNuSD0H9X2DbkgY9GJbJnnTJ/TT+ugOY/47Gp4zvFLYeMPm8jdXHRm+lBWMeQNDdDYuHj790kcSsj5Isqk2AaAzUfCf5EsOXDYF8PwL3O80/kXf6k4YskQ+aziVx1pbgFHbb2LasmsbRN6jbB+NMM3ZO4ifW79JmkYV42RyfYKjKvreerOCImhyOs1jRKkWyYYDkoC1tuPaod9lwY4QTxWTXlWSyniQJpImEh7YPum1wm6ceFxKKNgsC+Hs0jGwTskQqNG73MlCBucnE3z/bBQXg3Yu4rYYNoeLsrt7xqlKKlvTu9bvu9x0s7evekycwKyjjJAVFvi+bcXxsaka/VFkYogujp3rSHyXR1H+O+qkJBPGqQxvS/OEv+nEqvwLwy63brNvtR93xqCrn6dFtrlamY8H8gkAaFvC0g3B/kXHUjEUT5QdhA48q9vjDzQH/sSOLSA5dEtGjkANfiXdu4yABhM+ys6hpusD/3XAB/UpbdKnnyocUCimiMNtBlhngG1ArqJNfk8uLurVCaIJTQwrL2HMcHRGnVVjQCZTPFfs31mmuiW243kKuUjDZwAADk1vf8ie3riy4WEH8aAJnJeGhr0HNvghmXRj5JII2GOwFPXngU3P2aKFwat9Cfd1lpXIZncs4sGnyrZqNPcv+V3vRXOpJW6dSpBSpwYZCY6k=
+    - $HOME/.electron
 
 script:
   - npm run lint
-  - npm run build
-  - npm run package
 
-after_script:
-  - npm run ci:release
+after_success:
+  - if [ -n "$TRAVIS_TAG" ]; then npm run build && npm run package; fi;
+
+deploy:
+  provider: releases
+  api_key:
+    secure: EiK2mTXR/+13tRnsxG3YmDoEk5A5wPkofJimAkDmcPcNCzxPy+517SKaVuxAH1XafSm+L3mAEhK6pCQ3PxMERJKQqk7TwLuHde3TBW2fzaN02UVven31tCcJWKAMl3Wa1xPMO8s5Lwk6gaXMxNYzZ90/5KtQqt+jvB67PyNB8PSqfaGrtZS2laPfvbi2cF6V737/w+Xb9QiFy0Ke+1xQvtraMlGT2MVdjb9WCgqh8cWyU3UbIEauQCXgDMFZ7Ve9UWQWyvUVwG8dXltPs1IWl1eOBrjlLv7jekeZb5hID0QztBBQPwJfypf+dVXiR6pm4KJbOihx8h+MkIIZMdPuO0Vh2DTTlHuEwzHnrXL9FQZV1zlGMO7klzQBtx5Jk3W4yakuGFHQvuZb7AHiXkwnGJdoIDPZr5TsP4qe0Z0EjKpo7WrZej8/UyO5y+cZdv3vOKcnSrhm4fzjqE3GAs71zKjtwQvW9pC1zyvBzeqCphJaxvL8c1fu2qP1zTZu+9UEdlAeQem6xa6BbWzObTdtICS2kjmLS7ukct2Ap4WqRbzhthsw88tb7CGBPeowgNQUgebXSss0GZywhYP84vQFCHRcxJ5YJ6GtSIphQNOpo37FlppQpTml84GSHCCs9xnyTw7wBIuJpaLMyNpTWD0XV8Xf/PEvnYCGT8AWtKCcYbA=
+  file_glob: true
+  file: dist/*.tar.bz2
+  skip_cleanup: true
+  on:
+    tags: true

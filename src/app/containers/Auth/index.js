@@ -6,7 +6,7 @@ import { loginRequested } from '../../actions/auth'
 import FontAwesome from 'react-fontawesome'
 import LoadingStateButton from '../../components/LoadingStateButton'
 
-import styles from './style.css'
+import styles from './styles.css'
 
 const Auth = class extends React.Component {
   render () {
@@ -15,7 +15,8 @@ const Auth = class extends React.Component {
     return (
       <div className={styles.auth} style={{ minHeight: window.innerHeight }}>
         <p className={`lead ${styles.login}`}><FontAwesome name='lock' /> Authentication Required</p>
-        <p>You will need to sign in to your Xbox live account before you can use this app. Click the button below to authenticate. This should display the Microsoft Live account authentication screen in which you can sign in to your Xbox live account.</p>
+        <p>You will need to sign in to your Xbox live account to use this app.</p>
+        <br />
         <LoadingStateButton
           onClick={() => dispatch(loginRequested())}
           isLoading={actionInProgress}

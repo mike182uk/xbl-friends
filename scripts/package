@@ -8,3 +8,10 @@ electron-packager ./build \
   --out ./dist \
   --icon ./build/electron/xbl-friends.icns \
   --asar
+
+cd ./dist
+
+for dir in *
+do
+  tar -cjf ${dir}-${TRAVIS_TAG}.tar.bz2 ${dir}
+done

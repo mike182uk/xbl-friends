@@ -4,7 +4,7 @@ import moment from 'moment'
 import FontAwesome from 'react-fontawesome'
 import LoadingStateButton from '../LoadingStateButton'
 
-import styles from './style.css'
+import styles from './styles.css'
 
 export default class Update extends React.Component {
   componentDidMount () {
@@ -35,9 +35,9 @@ export default class Update extends React.Component {
           <LoadingStateButton
             onClick={() => onRequestFriendsUpdate()}
             isLoading={updating}
-            loadingText='Refresing...'
+            loadingText='Updating...'
             bsStyle='primary'
-          >Refresh</LoadingStateButton>
+          >Update</LoadingStateButton>
         </div>
       </div>
     )
