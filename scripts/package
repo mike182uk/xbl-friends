@@ -2,4 +2,9 @@
 
 rm -rf ./dist/*
 
-electron-packager ./build --platform darwin --arch x64 --out ./dist --icon ./build/electron/xbl-friends.icns --asar
+electron-packager ./build \
+  --platform darwin \
+  --arch x64 \
+  --out ./dist \
+  --icon ./build/electron/xbl-friends.icns \
+  --asar

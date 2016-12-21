@@ -2,7 +2,7 @@
 
 rm -rf ./build/*
 
-BABEL_ENV=prod webpack --config ./webpack.app.config.js
+BABEL_ENV=prod webpack --config ./webpack.config.prod.js
 
 cp -r ./src/electron ./build/
 cp -r ./src/common ./build/

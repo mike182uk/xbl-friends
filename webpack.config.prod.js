@@ -1,11 +1,9 @@
-const commonConfig = require('./webpack.app.common.config')
+const commonConfig = require('./webpack.config.common')
 const deepAssign = require('deep-assign')
 const path = require('path')
 
-const config = deepAssign({}, commonConfig, {
+module.exports = deepAssign({}, commonConfig, {
   output: {
     path: path.join(__dirname, 'build', 'app')
   }
 })
-
-module.exports = config

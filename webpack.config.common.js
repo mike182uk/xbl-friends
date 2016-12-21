@@ -2,7 +2,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const path = require('path')
 const webpack = require('webpack')
 
-const config = {
+module.exports = {
   entry: path.resolve(__dirname, 'src/app/index.js'),
   output: {
     filename: 'bundle.js',
@@ -63,5 +63,3 @@ const config = {
     require('postcss-cssnext')
   ]
 }
-
-module.exports = config

@@ -1,11 +1,9 @@
-const commonConfig = require('./webpack.app.common.config')
+const commonConfig = require('./webpack.config.common')
 const deepAssign = require('deep-assign')
 
-const config = deepAssign({}, commonConfig, {
+module.exports = deepAssign({}, commonConfig, {
   devtool: 'source-map',
   output: {
     publicPath: `http://localhost:${process.env.DEV_SERVER_PORT}/`
   }
 })
-
-module.exports = config
