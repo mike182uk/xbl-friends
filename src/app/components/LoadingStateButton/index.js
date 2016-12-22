@@ -1,8 +1,8 @@
 import React from 'react'
 
-import { Button, Glyphicon } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 
-import styles from '../../common.css'
+import LoadingIndicator from '../LoadingIndicator'
 
 const customProps = [
   'loadingText',
@@ -14,7 +14,7 @@ const LoadingStateButton = (props) => {
     <Button {...getButtonProps(props)}>
       {
         props.isLoading
-          ? <span><Glyphicon glyph='refresh' bsClass={`glyphicon ${styles.glyphiconRefreshAnimate}`} /> {props.loadingText}</span>
+          ? <span><LoadingIndicator /> {props.loadingText}</span>
           : props.children
       }
     </Button>

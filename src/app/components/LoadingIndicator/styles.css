@@ -1,4 +1,4 @@
-.glyphiconRefreshAnimate {
+.loadingIndicator {
   animation: spin .7s infinite linear;
 }
 
