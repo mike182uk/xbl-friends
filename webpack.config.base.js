@@ -56,7 +56,8 @@ module.exports = {
       template: path.resolve(__dirname, 'src/app/index.html')
     }),
     new webpack.DefinePlugin({
-      __DEV__: process.env.NODE_ENV === 'dev'
+      __DEV__: process.env.NODE_ENV === 'dev',
+      __INT__: process.env.NODE_ENV === 'int'
     })
   ],
   postcss: [

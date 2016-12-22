@@ -6,6 +6,7 @@
   "scripts": {
     "info": "npm-scripts-info",
     "dev:server": "scripty",
+    "dev:server-int": "scripty",
     "dev:app": "scripty",
     "dev:app-int": "scripty",
     "build:app": "scripty",
@@ -19,6 +20,7 @@
     "dev:server": "Start the dev server used by the application when in dev mode",
     "dev:app": "Start the application in dev mode (make sure you start the dev server first)",
     "dev:app-int": "Start the application in integration mode (make sure you start the dev server first)",
+    "dev:server-int": "Start the dev server in integration mode. Used by the application when in integration mode",
     "build": "Build the application",
     "built-app": "Start the built application",
     "package": "Package the built application",
@@ -85,7 +87,8 @@
   },
   "standard": {
     "globals": [
-      "__DEV__"
+      "__DEV__",
+      "__INT__"
     ]
   }
 }
