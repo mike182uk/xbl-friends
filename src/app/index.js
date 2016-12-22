@@ -14,6 +14,7 @@ import AppInitialising from './containers/AppInitialising'
 
 import 'bootstrap/dist/css/bootstrap.css'
 import 'font-awesome/css/font-awesome.css'
+import './styles.css'
 
 import {
   AUTH as AUTH_ROUTE,

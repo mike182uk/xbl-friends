@@ -39,18 +39,20 @@ const Friends = class extends React.Component {
     const groups = this.getGroups(favouriteFriends, onlineFriends, offlineFriends)
 
     return (
-      <div>
+      <div className={styles.friends}>
         <UpdateFriends
           updating={updateInProgress}
           lastUpdatedAt={lastUpdatedAt}
           onRequestFriendsUpdate={() => dispatch(friendsRetrievalRequested())}
         />
 
-        {groups.map((group, index) =>
-          <FriendsGroup key={index} title={group.title} friends={group.friends} />
-        )}
+        <div className={styles.groups}>
+          {groups.map((group, index) =>
+            <FriendsGroup key={index} title={group.title} friends={group.friends} />
+          )}
+        </div>
 
-        {!groups.length ? <p className={`${styles.noFriends} lead`}>No friends to display</p> : ''}
+        {!groups.length ? <div className={styles.noFriends}><p className='lead'>No friends to display</p></div> : ''}
       </div>
     )
   }

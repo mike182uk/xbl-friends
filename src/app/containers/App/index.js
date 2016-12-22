@@ -9,6 +9,8 @@ import {
   AUTH as AUTH_ROUTE
 } from '../../constants/routes'
 
+import styles from './styles.css'
+
 const App = class extends React.Component {
   getError () {
     if (this.props.error && this.props.showMainError) {
@@ -36,7 +38,7 @@ const App = class extends React.Component {
 
   render () {
     return (
-      <div className='container-fluid' style={{ minHeight: window.innerHeight }}>
+      <div className={`container-fluid ${styles.app}`}>
         {this.getNav()}
         {this.getError()}
         {this.props.children}

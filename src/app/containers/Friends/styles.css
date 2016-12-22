@@ -1,5 +1,17 @@
+.friends {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
 .noFriends {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
+}
+
+.noFriends p {
   text-align: center;
   font-size: 22px !important;
-  margin-top: 220px;
 }

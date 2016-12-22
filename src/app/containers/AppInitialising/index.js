@@ -26,7 +26,7 @@ const AppInitialising = class extends React.Component {
 
   render () {
     return (
-      <div className={styles.initialising} style={{ minHeight: window.innerHeight }}>
+      <div className={styles.initialising}>
         <p className={`lead ${styles.loading}`}>
           <LoadingIndicator />
           <br /><span ref='loadingText'>Loading</span>

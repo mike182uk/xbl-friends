@@ -13,9 +13,9 @@ const Auth = class extends React.Component {
     const { dispatch, actionInProgress } = this.props
 
     return (
-      <div className={styles.auth} style={{ minHeight: window.innerHeight }}>
+      <div className={styles.auth}>
         <p className={`lead ${styles.login}`}><FontAwesome name='lock' /> Authentication Required</p>
-        <p>You will need to sign in to your Xbox live account to use this app.</p>
+        <p>Sign in to your Xbox live account to use this app.</p>
         <br />
         <LoadingStateButton
           onClick={() => dispatch(loginRequested())}
