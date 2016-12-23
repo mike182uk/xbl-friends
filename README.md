@@ -1,4 +1,4 @@
-# XBL Friends
+# <img src="src/electron/icon.png" height="23"> XBL Friends
 
 [![Version](https://img.shields.io/github/release/mike182uk/xbl-friends.svg?style=flat-square)]()
 [![Build Status](https://img.shields.io/travis/mike182uk/xbl-friends.svg?style=flat-square)](http://travis-ci.org/mike182uk/xbl-friends)
