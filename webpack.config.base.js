@@ -48,6 +48,10 @@ module.exports = {
       {
         test: /\.svg(\?\S*)?$/,
         loader: 'url?limit=10000&mimetype=image/svg+xml'
+      },
+      {
+        test: /\.mp3$/,
+        loader: 'file-loader'
       }
     ]
   },

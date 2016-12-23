@@ -1,15 +1,33 @@
-/* global Notification */
+/* global Notification, Audio */
 
 import _ from 'lodash'
 
 import { NOTIFICATION_PREFERENCE_FAVOURITE_ONLY, NOTIFICATION_PREFERENCE_FRIEND_ONLY, NOTIFICATION_PREFERENCE_NON } from '../constants/settings'
 
+import notificationSoundPath from '../../electron/notification.mp3'
+
 export default function (store) {
   let friendsNotifiedFor = []
+  let firstRun = true
+  let currentNotificationsPreference = store.getState().settings.notifications.preference
 
   const notifyFriendsOnlineHandler = () => {
     let state = store.getState()
     let notificationsPreference = state.settings.notifications.preference
+
+    // dont send any notifications on the first load of the app
+    if (state.friends.lastUpdatedAt === null) {
+      return
+    }
+
+    // if the user has changed thier notifications preference then reset everything.
+    // this is too prevent notifications being sent as soon as the user changes there preference.
+    if (!firstRun && currentNotificationsPreference !== notificationsPreference) {
+      currentNotificationsPreference = notificationsPreference
+      friendsNotifiedFor = []
+      firstRun = true
+      return
+    }
 
     // not logged in
     if (!state.auth.authorized && !friendsNotifiedFor.length) {
@@ -28,22 +46,37 @@ export default function (store) {
       return
     }
 
-    const newFriendsToNotifyFor = getOnlineFriendsForNotificationsPreference(
+    // no friends :(
+    if (!state.friends.friends.length) {
+      friendsNotifiedFor = []
+      return
+    }
+
+    let newFriendsToNotifyFor = getOnlineFriendsForNotificationsPreference(
       state.friends.friends,
       notificationsPreference
     )
 
-    // not first run and newFriendsToNotifyFor differ
-    let newFriendsMap = newFriendsToNotifyFor.map(friend => friend.gamertag)
+    let newFriendsToNotifyForMap = newFriendsToNotifyFor.map(friend => friend.gamertag)
 
-    if (friendsNotifiedFor.length && !_.isEqual(newFriendsMap, friendsNotifiedFor)) {
-      _.difference(newFriendsMap, friendsNotifiedFor).forEach(friend =>
-        notify(
-          _.find(newFriendsToNotifyFor, { gamertag: friend })
-        ))
+    // not first run and newFriendsToNotifyFor differ
+    if (!firstRun && !_.isEqual(newFriendsToNotifyForMap, friendsNotifiedFor)) {
+      let notificationStepTimer = 0
+
+      _.difference(newFriendsToNotifyForMap, friendsNotifiedFor).forEach(gamertag => {
+        setTimeout(() => {
+          notify(
+            _.find(newFriendsToNotifyFor, { gamertag: gamertag })
+          )
+        }, notificationStepTimer)
+
+        // step the timeout so lots of notifications do not come in at once
+        notificationStepTimer += 2500
+      })
     }
 
-    friendsNotifiedFor = newFriendsMap
+    friendsNotifiedFor = newFriendsToNotifyForMap
+    firstRun = false
   }
 
   return store.subscribe(notifyFriendsOnlineHandler)
@@ -64,8 +97,11 @@ function getOnlineFriendsForNotificationsPreference (friends, notificationsPrefe
 }
 
 function notify (friend) {
+  (new Audio(notificationSoundPath)).play()
+
   return new Notification('Friend Online', {
     body: `${friend.gamertag} is online - ${friend.primaryInfo}`,
-    icon: friend.gamerpic
+    icon: friend.gamerpic,
+    silent: true
   })
 }
