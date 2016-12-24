@@ -21,7 +21,7 @@ const Auth = class extends React.Component {
           onClick={() => dispatch(loginRequested())}
           isLoading={actionInProgress}
           loadingText='Authenticating...'
-          bsStyle='primary'
+          bsStyle='success'
           block={false}
         >Sign In To Xbox Live</LoadingStateButton>
       </div>

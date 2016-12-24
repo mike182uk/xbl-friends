@@ -3,6 +3,12 @@
   flex-flow: row;
   align-items: center;
   margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #32373e
+}
+
+.friend:last-of-type {
+  border-bottom: none;
 }
 
 .pic {
@@ -51,6 +57,6 @@
   height: 8px;
   margin-right: 5px;
   border-radius: 15px;
-  background-color: #93E21A;
+  background-color: #5cb85c;
   margin-bottom: 2px;
 }

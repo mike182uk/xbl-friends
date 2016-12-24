@@ -36,7 +36,7 @@ export default class Update extends React.Component {
             onClick={() => onRequestFriendsUpdate()}
             isLoading={updating}
             loadingText='Updating...'
-            bsStyle='primary'
+            bsStyle='success'
           >Update</LoadingStateButton>
         </div>
       </div>

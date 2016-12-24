@@ -17,16 +17,16 @@ export default function AppMainNav () {
   return (
     <div className={styles.nav}>
       <LinkContainer to={{ pathname: APP_INITIALISING_ROUTE }} style={{ visibility: (__DEV__ || __INT__) ? 'visible' : 'hidden' }}>
-        <Button><FontAwesome name='hourglass-half' /></Button>
+        <Button bsStyle='primary'><FontAwesome name='hourglass-half' /></Button>
       </LinkContainer>
       <LinkContainer to={{ pathname: AUTH_ROUTE }} style={{ visibility: (__DEV__ || __INT__) ? 'visible' : 'hidden' }}>
-        <Button><FontAwesome name='lock' /></Button>
+        <Button bsStyle='primary'><FontAwesome name='lock' /></Button>
       </LinkContainer>
       <LinkContainer to={{ pathname: FRIENDS_ROUTE }}>
-        <Button><FontAwesome name='users' /></Button>
+        <Button bsStyle='primary'><FontAwesome name='users' /></Button>
       </LinkContainer>
       <LinkContainer to={{ pathname: SETTINGS_ROUTE }}>
-        <Button><FontAwesome name='wrench' /></Button>
+        <Button bsStyle='primary'><FontAwesome name='wrench' /></Button>
       </LinkContainer>
     </div>
   )

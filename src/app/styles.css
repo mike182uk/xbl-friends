@@ -2,6 +2,36 @@ html, body {
   height: 100%;
 }
 
-:global(#root) {
-  height: 100%;
+body {
+  background-color: #272b30;
+  color: #C8C8C9;
+}
+
+hr {
+  border-top-color: #32373e;
+  border-top-width: 4px;
+}
+
+:global {
+  & #root {
+    height: 100%;
+  }
+
+  & .form-control[disabled] {
+    background-color: #b0b0b0;
+    border-color: #b0b0b0;
+  }
+
+  & ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  & ::-webkit-scrollbar-track {
+    background-color: #32373e;
+  }
+
+  & ::-webkit-scrollbar-thumb {
+    background-color: #444a53;
+    border-radius: 10px;
+  }
 }
