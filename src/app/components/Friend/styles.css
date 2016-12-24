@@ -4,7 +4,17 @@
   align-items: center;
   margin-bottom: 1rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid #32373e
+  border-bottom: 1px solid #32373e;
+  opacity: 0.8;
+  transition: opacity linear 0.2s;
+}
+
+.friend:hover {
+  opacity: 1;
+}
+
+.friend.online {
+  opacity: 1;
 }
 
 .friend:last-of-type {
@@ -27,13 +37,16 @@
   flex-flow: column;
 }
 
-.details span {
-  flex: auto;
-}
-
 .gamertag {
   font-weight: bold;
   font-size: 16px;
+  color: #C8C8C9;
+  align-self: flex-start;
+}
+
+.gamertag:hover, .gamertag:focus {
+  color: #5cb85c;
+  text-decoration: none;
 }
 
 .name {

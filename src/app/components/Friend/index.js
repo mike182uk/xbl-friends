@@ -1,4 +1,5 @@
 import React from 'react'
+import { shell } from 'electron'
 
 import { Image } from 'react-bootstrap'
 
@@ -16,11 +17,17 @@ export default function Friend (props) {
         <Image src={props.gamerpic} circle />
       </div>
       <div className={styles.details}>
-        <span className={styles.gamertag}>{props.gamertag}</span>
+        <a href={`https://account.xbox.com/en-US/Profile?GamerTag=${props.gamertag}`} className={styles.gamertag} onClick={openLinkExternally}>{props.gamertag}</a>
         {props.name ? <span className={styles.name}>{props.name}</span> : ''}
         <span className={styles.primaryStatus}>{props.primaryStatus}</span>
         {props.secondaryStatus ? <span className={styles.secondaryStatus}>{props.secondaryStatus}</span> : ''}
       </div>
     </div>
   )
+}
+
+function openLinkExternally (e) {
+  e.preventDefault()
+
+  shell.openExternal(e.target.href)
 }
