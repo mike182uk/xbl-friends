@@ -41,7 +41,7 @@
   font-weight: bold;
   font-size: 16px;
   color: #C8C8C9;
-  align-self: flex-start;
+  margin-right: 6px;
 }
 
 .gamertag:hover, .gamertag:focus {
@@ -54,13 +54,20 @@
   font-size: 12px;
 }
 
+.gamertagNameContainer {
+  display: flex;
+  align-self: flex-start;
+  align-items: center;
+}
+
 .primaryStatus {
   margin-top: 10px;
+  font-size: 13px;
 }
 
 .secondaryStatus {
   font-style: italic;
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .online .gamertag::before {

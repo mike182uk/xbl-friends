@@ -4,7 +4,7 @@ html, body {
 
 body {
   background-color: #272b30;
-  color: #C8C8C9;
+  color: #c9c8c8;
 }
 
 hr {
@@ -32,6 +32,13 @@ hr {
 
   & ::-webkit-scrollbar-thumb {
     background-color: #444a53;
-    border-radius: 10px;
+  }
+
+  & ::selection {
+    background: none;
+  }
+
+  & *:hover {
+    cursor: default;
   }
 }

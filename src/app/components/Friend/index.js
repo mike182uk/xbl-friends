@@ -17,8 +17,10 @@ export default function Friend (props) {
         <Image src={props.gamerpic} circle />
       </div>
       <div className={styles.details}>
-        <a href={`https://account.xbox.com/en-US/Profile?GamerTag=${props.gamertag}`} className={styles.gamertag} onClick={openLinkExternally}>{props.gamertag}</a>
-        {props.name ? <span className={styles.name}>{props.name}</span> : ''}
+        <div className={styles.gamertagNameContainer}>
+          <a href={`https://account.xbox.com/en-US/Profile?GamerTag=${props.gamertag}`} className={styles.gamertag} onClick={openLinkExternally}>{props.gamertag}</a>
+          {props.name ? <span className={styles.name}>{props.name}</span> : ''}
+        </div>
         <span className={styles.primaryStatus}>{props.primaryStatus}</span>
         {props.secondaryStatus ? <span className={styles.secondaryStatus}>{props.secondaryStatus}</span> : ''}
       </div>
