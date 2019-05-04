@@ -1,3 +1,5 @@
+#### ⚠️ This project is no longer maintained
+
 # <img src="src/electron/icon.png" height="23"> XBL Friends
 
 [![Version](https://img.shields.io/github/release/mike182uk/xbl-friends.svg?style=flat-square)]()
